@@ -110,21 +110,21 @@ def format_key_info(key_block_lines):
 
     # Coba cocokkan dengan Format 1 (Standard 4-liner dari contoh pengguna)
     # Contoh Telegram:
-    # Private Key ► (<code>VALUE</code>)
+    # Private Key: (<code>VALUE</code>)
     # pubkey: (<code>VALUE</code>)
     # Address: (<code>VALUE</code>) atau Address: (N/A)
     # rmd160: (<code>VALUE</code>) atau rmd160: (N/A)
 
-    # Heuristik untuk Format 1: baris pertama dimulai dengan "Privkey" atau "Private Key ►"
+    # Heuristik untuk Format 1: baris pertama dimulai dengan "Privkey" atau "Private Key:"
     if key_block_lines and \
-       (key_block_lines[0].startswith("Privkey ") or key_block_lines[0].startswith("Private Key ► ")):
+       (key_block_lines[0].startswith("Privkey ") or key_block_lines[0].startswith("Private Key: ")):
         
         # Baris 1: Private Key
         line1_text = key_block_lines[0]
         val1 = ""
         if line1_text.startswith("Privkey "): val1 = line1_text[len("Privkey "):].strip()
-        elif line1_text.startswith("Private Key ► "): val1 = line1_text[len("Private Key ► "):].strip()
-        if val1: telegram_message_lines.append(f"Private Key ► <code>{html.escape(val1)}</code>")
+        elif line1_text.startswith("Private Key: "): val1 = line1_text[len("Private Key: "):].strip()
+        if val1: telegram_message_lines.append(f"Private Key: <code>{html.escape(val1)}</code>")
 
         # Baris 2: Pubkey
         if len(key_block_lines) > 1:
@@ -199,13 +199,14 @@ def parse_config(file_path):
                 print("[!] Error: File BTC_Setting.txt kosong")
                 return None
             
-            print("[*] Daftar script yang tersedia:")
+            print("[*] List script:")
             for i, line in enumerate(lines):
-                print(f"{i + 1}. {line}")
+                print("=======================================================================")
+                print(f"[{i + 1}] {line}")
             
             while True:
                 try:
-                    choice_input = input("\nPilih nomor script yang ingin dijalankan (atau 'q' untuk keluar): ")
+                    choice_input = input("\nPilih nomor (atau 'q' untuk keluar): ")
                     if choice_input.lower() == 'q':
                         print("[*] Keluar dari pemilihan script.")
                         return None
