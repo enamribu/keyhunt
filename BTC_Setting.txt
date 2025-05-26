@@ -1,4 +1,7 @@
-./keyhunt -m address -c btc -f tests/btc.txt -t 35 -r 10000000007022fb868:1ffffffffffffffffff -R
-./keyhunt -m bsgs -f tests/135.txt -r 40000000000000005d3ab1ec5484000000:7fffffffffffffffffffffffffffffffff -t 35 -k 20 -R
-./keyhunt -m bsgs -f tests/tes_bsgs.txt -r 1000000000000000000:1ffffffffffffffffff -t 8 -k 20
-./keyhunt -m address -c btc -f tests/tes_address.txt -t 8 -r 1000000000000000000:1ffffffffffffffffff
+./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
+./keyhunt -r 40000000000000005d3ab1ec5484000000:7fffffffffffffffffffffffffffffffff -m bsgs -f tests/135.txt -t 35 -k 20 -R -q -s 10
+./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -R -q -s 10
+./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -t 8 -q -s 10
+##################Khusus TES##################
+./keyhunt -r 1000000000000000000:1ffffffffffffffffff -m address -c btc -f tests/tes_address.txt -t 8 -q -s 10
+./keyhunt -r 1000000000000000000:1ffffffffffffffffff -m bsgs -f tests/tes_bsgs.txt -t 8 -k 20 -q -s 10
