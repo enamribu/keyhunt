@@ -1,4 +1,5 @@
-./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
+./keyhunt -b 73 -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
+keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
 ./keyhunt -r 40000000000000005d3ab1ec5484000000:7fffffffffffffffffffffffffffffffff -m bsgs -f tests/135.txt -t 35 -k 20 -R -q -s 10
 ./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -R -q -s 10
 ./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -m address -c btc -f tests/btc.txt -t 8 -q -s 10
