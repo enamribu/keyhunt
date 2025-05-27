@@ -201,7 +201,6 @@ def parse_config(file_path):
             
             print("[*] List script:")
             for i, line in enumerate(lines):
-                print("=======================================================================")
                 print(f"[{i + 1}] {line}")
             
             while True:
