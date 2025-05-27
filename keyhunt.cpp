@@ -5822,8 +5822,8 @@ void writevanitykey(bool compressed,Int *key)	{
 		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("\n[*] Vanity Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
-	printf("--------------------------------------------------\n");
+	printf("------------------------------------------------------------------------------\n");
+	printf("\n[*] Vanity Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
