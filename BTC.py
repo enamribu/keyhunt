@@ -22,7 +22,7 @@ import os
 import time
 from datetime import datetime
 import sys
-import html # Ditambahkan untuk escaping HTML
+import html 
 
 # Konfigurasi Telegram
 TELEGRAM_TOKEN = "7513012504:AAFYmIgQgLzp0k_J63E22LtM-A6Xq9UvXEU"  # GANTI DENGAN TOKEN BOT ANDA
@@ -60,7 +60,7 @@ def get_new_keys(file_path, last_position):
     Mendapatkan blok key baru yang ditambahkan ke file.
     Setiap key baru adalah list dari baris-baris string dalam blok tersebut.
     """
-    new_key_blocks = [] # List of lists of strings
+    new_key_blocks = [] 
     try:
         if not os.path.exists(file_path):
             return new_key_blocks, last_position
@@ -79,17 +79,15 @@ def get_new_keys(file_path, last_position):
                     last_position = f.tell()
                     return new_key_blocks, last_position
 
-                # Asumsi blok key dipisahkan oleh baris kosong
                 key_blocks_text = content_to_process.split('\n\n') 
                 for block_text in key_blocks_text:
                     block_text_stripped = block_text.strip() 
-                    if not block_text_stripped: # Lewati blok kosong
+                    if not block_text_stripped: 
                         continue
                     
-                    # Ambil semua baris yang tidak kosong dari blok
                     lines_in_block = [line.strip() for line in block_text_stripped.split('\n') if line.strip()]
                     
-                    if lines_in_block: # Pastikan ada baris dalam blok
+                    if lines_in_block: 
                         new_key_blocks.append(lines_in_block)
             
             last_position = f.tell()
@@ -105,37 +103,25 @@ def format_key_info(key_block_lines):
     sesuai dengan contoh format yang diberikan pengguna.
     """
     
-    header = "💰 <b>KEY FOUND!</b> 💰\n" # Satu baris kosong akan ditambahkan sebelum baris pertama info
+    header = "💰 <b>KEY FOUND!</b> 💰\n" 
     telegram_message_lines = []
 
-    # Coba cocokkan dengan Format 1 (Standard 4-liner dari contoh pengguna)
-    # Contoh Telegram:
-    # Private Key: (<code>VALUE</code>)
-    # pubkey: (<code>VALUE</code>)
-    # Address: (<code>VALUE</code>) atau Address: (N/A)
-    # rmd160: (<code>VALUE</code>) atau rmd160: (N/A)
-
-    # Heuristik untuk Format 1: baris pertama dimulai dengan "Privkey" atau "Private Key:"
     if key_block_lines and \
        (key_block_lines[0].startswith("Privkey ") or key_block_lines[0].startswith("Private Key: ")):
         
-        # Baris 1: Private Key
         line1_text = key_block_lines[0]
         val1 = ""
         if line1_text.startswith("Privkey "): val1 = line1_text[len("Privkey "):].strip()
         elif line1_text.startswith("Private Key: "): val1 = line1_text[len("Private Key: "):].strip()
         if val1: telegram_message_lines.append(f"Private Key: <code>{html.escape(val1)}</code>")
 
-        # Baris 2: Pubkey
         if len(key_block_lines) > 1:
             line2_text = key_block_lines[1]
             val2 = ""
-            # File mungkin memiliki "Publickey " atau "pubkey: "
             if line2_text.startswith("Publickey "): val2 = line2_text[len("Publickey "):].strip()
             elif line2_text.startswith("pubkey: "): val2 = line2_text[len("pubkey: "):].strip()
             if val2: telegram_message_lines.append(f"pubkey: <code>{html.escape(val2)}</code>")
         
-        # Baris 3: Address
         if len(key_block_lines) > 2:
             line3_text = key_block_lines[2]
             val3 = ""
@@ -145,7 +131,6 @@ def format_key_info(key_block_lines):
                 if val3.upper() == "N/A": telegram_message_lines.append(f"Address: ({html.escape(val3)})")
                 else: telegram_message_lines.append(f"Address: <code>{html.escape(val3)}</code>")
 
-        # Baris 4: Rmd160
         if len(key_block_lines) > 3:
             line4_text = key_block_lines[3]
             val4 = ""
@@ -155,37 +140,29 @@ def format_key_info(key_block_lines):
                 if val4.upper() == "N/A": telegram_message_lines.append(f"rmd160: ({html.escape(val4)})")
                 else: telegram_message_lines.append(f"rmd160: <code>{html.escape(val4)}</code>")
     
-    # Coba cocokkan dengan Format 2 (Vanity-like dari contoh pengguna)
-    # Contoh Telegram:
-    # Key found privkey: (<code>VALUE</code>)
-    # Publickey: (<code>VALUE</code>)
     elif key_block_lines and key_block_lines[0].startswith("Key found privkey "):
         line1_text = key_block_lines[0]
-        # Ekstrak nilai setelah "Key found privkey:"
         val1 = line1_text[len("Key found privkey"):].strip()
         if val1: telegram_message_lines.append(f"Key found privkey: <code>{html.escape(val1)}</code>")
 
         if len(key_block_lines) > 1:
             line2_text = key_block_lines[1]
             val2 = ""
-            # Ekstrak nilai setelah "Publickey:" atau "Publickey "
             if line2_text.startswith("Publickey:"): 
                 val2 = line2_text[len("Publickey:"):].strip()
             elif line2_text.startswith("Publickey "):
                 val2 = line2_text[len("Publickey "):].strip()
             
             if val2:
-                # Format yang diinginkan pengguna: Publickey: (<code>VALUE</code>)
                 telegram_message_lines.append(f"Publickey: <code>{html.escape(val2)}</code>")
     
-    else: # Fallback jika tidak ada format spesifik yang cocok: Kirim baris apa adanya, dibungkus code per baris
+    else: 
         for line_text in key_block_lines:
             telegram_message_lines.append(f"<code>{html.escape(line_text)}</code>")
 
     if telegram_message_lines:
         return header + "\n" + "\n".join(telegram_message_lines)
     else: 
-        # Jika blok kosong atau tidak bisa diparsing sama sekali (seharusnya tidak terjadi jika get_new_keys mengirim data)
         return header + "<i>(Unable to parse key block content)</i>"
 
 
@@ -200,31 +177,33 @@ def parse_config(file_path):
                 return None
             
             print("[*] List script:")
-            # Menyimpan opsi yang bisa dipilih pengguna dan yang akan diberi nomor
             selectable_options = [] 
             
             for line in lines:
-                # Cek apakah baris adalah penanda (diawali dengan '***' atau baris kosong)
                 if line.startswith('***') or not line: 
-                    print(line) # Cetak baris penanda tanpa nomor
+                    print(line) 
                 else:
                     selectable_options.append(line)
-                    print(f"[{len(selectable_options)}] {line}") # Beri nomor pada baris yang bisa dipilih
+                    print(f"[{len(selectable_options)}] {line}") 
             
             while True:
                 try:
-                    choice_input = input("\nPilih nomor (atau 'q' untuk keluar): ")
+                    choice_input = input("\nPilih nomor atau masukkan parameter manual: ")
                     if choice_input.lower() == 'q':
                         print("[*] Keluar dari pemilihan script.")
                         return None
-                    choice = int(choice_input)
-                    if 1 <= choice <= len(selectable_options):
-                        command = selectable_options[choice - 1].split()
-                        return command
-                    else:
-                        print("[!] Pilihan tidak valid. Silakan coba lagi.")
-                except ValueError:
-                    print("[!] Input tidak valid. Masukkan nomor atau 'q'.")
+                    
+                    try:
+                        choice = int(choice_input)
+                        if 1 <= choice <= len(selectable_options):
+                            command = selectable_options[choice - 1].split()
+                            return command
+                        else:
+                            print("[!] Pilihan tidak valid. Silakan coba lagi.")
+                    except ValueError:
+                        # Jika input bukan angka, asumsikan itu parameter manual
+                        return choice_input.split()
+
                 except Exception as e:
                     print(f"[!] Terjadi kesalahan saat memproses pilihan: {str(e)}", file=sys.stderr)
                     return None
@@ -237,7 +216,7 @@ def parse_config(file_path):
         return None
 
 def run_keyhunt():
-    """Menjalankan keyhunt.exe dengan parameter dari BTC_Setting.txt."""
+    """Menjalankan keyhunt.exe dengan parameter dari BTC_Setting.txt atau manual."""
     print_banner()
     
     try:
@@ -272,7 +251,6 @@ def run_keyhunt():
                 break
             
             if os.path.exists(output_file):
-                # get_new_keys sekarang mengembalikan list dari list string (blok-blok baris)
                 new_key_blocks_list, last_pos_update = get_new_keys(output_file, last_position)
                 if new_key_blocks_list:
                     last_position = last_pos_update
