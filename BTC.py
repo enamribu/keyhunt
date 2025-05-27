@@ -200,8 +200,16 @@ def parse_config(file_path):
                 return None
             
             print("[*] List script:")
-            for i, line in enumerate(lines):
-                print(f"[{i + 1}] {line}")
+            # Menyimpan opsi yang bisa dipilih pengguna dan yang akan diberi nomor
+            selectable_options = [] 
+            
+            for line in lines:
+                # Cek apakah baris adalah penanda (diawali dengan '***' atau baris kosong)
+                if line.startswith('***') or not line: 
+                    print(line) # Cetak baris penanda tanpa nomor
+                else:
+                    selectable_options.append(line)
+                    print(f"[{len(selectable_options)}] {line}") # Beri nomor pada baris yang bisa dipilih
             
             while True:
                 try:
@@ -210,8 +218,8 @@ def parse_config(file_path):
                         print("[*] Keluar dari pemilihan script.")
                         return None
                     choice = int(choice_input)
-                    if 1 <= choice <= len(lines):
-                        command = lines[choice - 1].split()
+                    if 1 <= choice <= len(selectable_options):
+                        command = selectable_options[choice - 1].split()
                         return command
                     else:
                         print("[!] Pilihan tidak valid. Silakan coba lagi.")
