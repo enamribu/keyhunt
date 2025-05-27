@@ -474,7 +474,7 @@ int main(int argc, char **argv)	{
 			what year is??
 			WTF linux without RNG ? 
 		*/
-		fprintf(stderr,"[0;31m[E] Error getrandom() ?\n[0m");
+		fprintf(stderr,"[0;31m[E] Error getrandom() ?\n");
 		exit(EXIT_FAILURE);
 		rseed(clock() + time(NULL) + rand()*rand());
 	}
@@ -933,13 +933,13 @@ int main(int argc, char **argv)	{
 			case MODE_ADDRESS:
 			case MODE_XPOINT:
 				if(!readFileAddress(fileName))	{
-					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n[0m");
+					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n");
 					exit(EXIT_FAILURE);
 				}
 			break;
 			case MODE_VANITY:
 				if(!readFileVanity(fileName))	{
-					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n[0m");
+					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n");
 					exit(EXIT_FAILURE);
 				}
 			break;
@@ -2478,7 +2478,7 @@ void *thread_process_minikeys(void *vargp)	{
 									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\a",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 									fclose(keys);
 								}
-								printf("[1;32m\nHIT!! Private Key: %s[0m\npubkey: %s\nminikey: %s\naddress: %s\n\a",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+								printf("\nHIT!! Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\a",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 								ReleaseMutex(write_keys);
 #else
@@ -3942,7 +3942,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+] [1;32m Thread Key found privkey %s [0m   \n\a",hextemp);
+								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -4193,7 +4193,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+] [1;32m Thread Key found privkey %s [0m    \n\a",hextemp);
+								printf("[+]  Thread Key found privkey %s     \n\a",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -4998,7 +4998,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+] [1;32m Thread Key found privkey %s [0m   \n\a",hextemp);
+								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -5256,7 +5256,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+] [1;32m Thread Key found privkey %s [0m   \n\a",hextemp);
+								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -5543,7 +5543,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 								r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 								if(r)	{
 									hextemp = keyfound.GetBase16();
-									printf("[+] [1;32m Thread Key found privkey %s [0m  \n\a",hextemp);
+									printf("[+]  Thread Key found privkey %s   \n\a",hextemp);
 									point_found = secp->ComputePublicKey(&keyfound);
 									aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 									printf("[+] Publickey %s\n",aux_c);
@@ -6010,7 +6010,7 @@ void writekey(bool compressed,Int *key)	{
 		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("[1;32m\nHit! Private Key: %s[0m\npubkey: %s\nAddress: %s\nrmd160: %s\n\a",hextemp,public_key_hex,address,hexrmd);
+	printf("\nHit! Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\a",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6043,7 +6043,7 @@ void writekeyeth(Int *key)	{
 		fclose(keys);
 	}
 	printf("\a");
-	printf("[0;32m\n Hit!!!! Private Key: %s[0m\naddress: %s\n",hextemp,address);
+	printf("[0;32m\n Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
 #else
