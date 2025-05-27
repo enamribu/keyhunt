@@ -59,6 +59,7 @@ email: albertobsd@gmail.com
 #define SEARCH_UNCOMPRESS 0
 #define SEARCH_COMPRESS 1
 #define SEARCH_BOTH 2
+
 uint32_t  THREADBPWORKLOAD = 1048576;
 
 struct checksumsha256	{
@@ -120,7 +121,8 @@ char *str_baseminikey = NULL;
 char *raw_baseminikey = NULL;
 char *minikeyN = NULL;
 int minikey_n_limit;
-const char *version = "0.2.230519 Satoshi Quest(Linux)";
+	
+const char *version = "0.2.230519 Satoshi Quest";
 
 #define CPU_GRP_SIZE 1024
 
@@ -474,11 +476,15 @@ int main(int argc, char **argv)	{
 			what year is??
 			WTF linux without RNG ? 
 		*/
-		fprintf(stderr,"[0;31m[E] Error getrandom() ?\n");
+		fprintf(stderr,"[E] Error getrandom() ?\n");
 		exit(EXIT_FAILURE);
 		rseed(clock() + time(NULL) + rand()*rand());
 	}
 #endif
+	
+	
+	
+	printf("[*****] GOOD LUCK [*****]\n\n");
 
 	while ((c = getopt(argc, argv, "deh6MqRSB:b:c:C:E:f:I:k:l:m:N:n:p:r:s:t:v:G:8:z:")) != -1) {
 		switch(c) {
@@ -496,7 +502,7 @@ int main(int argc, char **argv)	{
 					//printf("[+] BSGS mode %s\n",optarg);
 				}
 				else	{
-					fprintf(stderr,"[W] Ignoring unknown BSGS mode? %s\n",optarg);
+					fprintf(stderr,"[W] Ignoring unknow bsgs mode %s\n",optarg);
 				}
 			break;
 			case 'b':
@@ -516,7 +522,7 @@ int main(int argc, char **argv)	{
 					FLAGBITRANGE = 1;
 				}
 				else	{
-					fprintf(stderr,"[E] Invalid bits param: %s.\n",optarg);
+					fprintf(stderr,"[E] invalid bits param: %s.\n",optarg);
 				}
 			break;
 			case 'c':
@@ -527,7 +533,7 @@ int main(int argc, char **argv)	{
 					break;
 					case 1: //eth
 						FLAGCRYPTO = CRYPTO_ETH;
-						printf("[+] Setting search for ETH adddress \n");
+						printf("[+] Setting search for ETH adddress.\n");
 					break;
 					/*
 					case 2: //all
@@ -536,7 +542,7 @@ int main(int argc, char **argv)	{
 					*/
 					default:
 						FLAGCRYPTO = CRYPTO_NONE;
-						fprintf(stderr,"[E] Unknown crypto value %s\n",optarg);
+						fprintf(stderr,"[E] Unknow crypto value %s\n",optarg);
 						exit(EXIT_FAILURE);
 					break;
 				}
@@ -554,7 +560,7 @@ int main(int argc, char **argv)	{
 							raw_baseminikey[i] = (int)(strchr(Ccoinbuffer,str_baseminikey[i+1]) - Ccoinbuffer) % 58;
 						}
 						else	{
-							fprintf(stderr,"[E] Invalid character in minikey\n");
+							fprintf(stderr,"[E] invalid character in minikey\n");
 							exit(EXIT_FAILURE);
 						}
 						
@@ -568,11 +574,11 @@ int main(int argc, char **argv)	{
 			break;
 			case 'd':
 				FLAGDEBUG = 1;
-				printf("[+] Flag DEBUG  ON\n");
+				printf("[+] Flag DEBUG enabled\n");
 			break;
 			case 'e':
 				FLAGENDOMORPHISM = 1;
-				printf("[+] Endomorphism  ON\n");
+				printf("[+] Endomorphism enabled\n");
 				lambda.SetBase16("5363ad4cc05c30e0a5261c028812645a122e22ea20816678df02967c1b23bd72");
 				lambda2.SetBase16("ac9c52b33fa3cf1f5ad9e3fd77ed9ba4a880b9fc8ec739c2e0cfc810b51283ce");
 				beta.SetBase16("7ae96a2b657c07106e64479eac3434e99cf0497512f58995c1396c28719501ee");
@@ -591,38 +597,38 @@ int main(int argc, char **argv)	{
 				if(KFACTOR <= 0)	{
 					KFACTOR = 1;
 				}
-				printf("[+] K Factor  %i\n",KFACTOR);
+				printf("[+] K factor %i\n",KFACTOR);
 			break;
 
 			case 'l':
 				switch(indexOf(optarg,publicsearch,3)) {
 					case SEARCH_UNCOMPRESS:
 						FLAGSEARCH = SEARCH_UNCOMPRESS;
-						printf("[+] Search  uncompressed\n");
+						printf("[+] Search uncompress only\n");
 					break;
 					case SEARCH_COMPRESS:
 						FLAGSEARCH = SEARCH_COMPRESS;
-						printf("[+] Search  compressed\n");
+						printf("[+] Search compress only\n");
 					break;
 					case SEARCH_BOTH:
 						FLAGSEARCH = SEARCH_BOTH;
-						printf("[+] Search  both compressed/uncompressed\n");
+						printf("[+] Search both compress and uncompress\n");
 					break;
 				}
 			break;
 			case 'M':
 				FLAGMATRIX = 1;
-				printf("[+] Matrix screen  ON\n");
+				printf("[+] Matrix screen\n");
 			break;
 			case 'm':
 				switch(indexOf(optarg,modes,7)) {
 					case MODE_XPOINT: //xpoint
 						FLAGMODE = MODE_XPOINT;
-						printf("[+] Mode  xpoint\n");
+						printf("[+] Mode xpoint\n");
 					break;
 					case MODE_ADDRESS: //address
 						FLAGMODE = MODE_ADDRESS;
-						printf("[+] Mode  address\n");
+						printf("[+] Mode address\n");
 					break;
 					case MODE_BSGS:
 						FLAGMODE = MODE_BSGS;
@@ -631,27 +637,27 @@ int main(int argc, char **argv)	{
 					case MODE_RMD160:
 						FLAGMODE = MODE_RMD160;
 						FLAGCRYPTO = CRYPTO_BTC;
-						printf("[+] Mode  rmd160\n");
+						printf("[+] Mode rmd160\n");
 					break;
 					case MODE_PUB2RMD:
 						FLAGMODE = MODE_PUB2RMD;
-						printf("[+] Mode pub2rmd deprecated.use rmd160\n");
+						printf("[+] Mode pub2rmd was removed\n");
 						exit(0);
 					break;
 					case MODE_MINIKEYS:
 						FLAGMODE = MODE_MINIKEYS;
-						printf("[+] Mode  minikeys\n");
+						printf("[+] Mode minikeys\n");
 					break;
 					case MODE_VANITY:
 						FLAGMODE = MODE_VANITY;
-						printf("[+] Mode  vanity\n");
+						printf("[+] Mode vanity\n");
 						if(vanity_bloom == NULL){
 							vanity_bloom = (struct bloom*) calloc(1,sizeof(struct bloom));
 							checkpointer((void *)vanity_bloom,__FILE__,"calloc","vanity_bloom" ,__LINE__ -1);
 						}
 					break;
 					default:
-						fprintf(stderr,"[E] Unknown mode value %s\n",optarg);
+						fprintf(stderr,"[E] Unknow mode value %s\n",optarg);
 						exit(EXIT_FAILURE);
 					break;
 				}
@@ -662,10 +668,10 @@ int main(int argc, char **argv)	{
 			break;
 			case 'q':
 				FLAGQUIET	= 1;
-				printf("[+] Quiet output  ON\n");
+				printf("[+] Quiet thread output\n");
 			break;
 			case 'R':
-				printf("[+] Random mode  ON\n");
+				printf("[+] Random mode\n");
 				FLAGRANDOM = 1;
 				FLAGBSGSMODE =  3;
 			break;
@@ -699,7 +705,7 @@ int main(int argc, char **argv)	{
 							}
 						break;
 						default:
-							printf("[E] Unknown number of Range Params: %i\n",t.n);
+							printf("[E] Unknow number of Range Params: %i\n",t.n);
 						break;
 					}
 				}
@@ -710,7 +716,7 @@ int main(int argc, char **argv)	{
 					OUTPUTSECONDS.SetInt32(30);
 				}
 				if(OUTPUTSECONDS.IsZero())	{
-					printf("[+] Stats output  OFF\n");
+					printf("[+] Turn off stats output\n");
 				}
 				else	{
 					hextemp = OUTPUTSECONDS.GetBase10();
@@ -726,7 +732,7 @@ int main(int argc, char **argv)	{
 				if(NTHREADS <= 0)	{
 					NTHREADS = 1;
 				}
-				printf((NTHREADS > 1) ? "[+] Threads  %u\n": "[+] Thread  %u\n",NTHREADS);
+				printf((NTHREADS > 1) ? "[+] Threads : %u\n": "[+] Thread : %u\n",NTHREADS);
 			break;
 			case 'v':
 				FLAGVANITY = 1;
@@ -736,21 +742,21 @@ int main(int argc, char **argv)	{
 				}
 				if(isValidBase58String(optarg))	{
 					if(addvanity(optarg) > 0)	{
-						printf("[+] Added Vanity search  %s\n",optarg);
+						printf("[+] Added Vanity search : %s\n",optarg);
 					}
 					else	{
-						printf("[+] Vanity search  \"%s\" was NOT Added\n",optarg);
+						printf("[+] Vanity search \"%s\" was NOT Added\n",optarg);
 					}
 				}
 				else {
-					fprintf(stderr,"[+] The string  \"%s\" is not Valid Base58\n",optarg);
+					fprintf(stderr,"[+] The string \"%s\" is not Valid Base58\n",optarg);
 				}
 				
 			break;
 			case '8':
 				if(strlen(optarg) == 58)	{
 					Ccoinbuffer = optarg; 
-					printf("[+] Base58 for Minikeys  %s\n",Ccoinbuffer);
+					printf("[+] Base58 for Minikeys %s\n",Ccoinbuffer);
 				}
 				else	{
 					fprintf(stderr,"[E] The base58 alphabet must be 58 characters long.\n");
@@ -762,17 +768,17 @@ int main(int argc, char **argv)	{
 				if(FLAGBLOOMMULTIPLIER <= 0)	{
 					FLAGBLOOMMULTIPLIER = 1;
 				}
-				printf("[+] Bloom Size Multiplier  %i\n",FLAGBLOOMMULTIPLIER);
+				printf("[+] Bloom Size Multiplier %i\n",FLAGBLOOMMULTIPLIER);
 			break;
 			default:
-				fprintf(stderr,"[E] Unknown option? -%c\n",c);
+				fprintf(stderr,"[E] Unknow opcion -%c\n",c);
 				exit(EXIT_FAILURE);
 			break;
 		}
 	}
 	
 	if(  FLAGBSGSMODE == MODE_BSGS && FLAGENDOMORPHISM)	{
-		fprintf(stderr,"[E] Endomorphism doesn't work with BSGS(use with address/rmd160/vanity/xpoint only)\n");
+		fprintf(stderr,"[E] Endomorphism doesn't work with BSGS\n");
 		exit(EXIT_FAILURE);
 	}
 	
@@ -788,7 +794,7 @@ int main(int argc, char **argv)	{
 		else{
 			stride.SetBase10(str_stride);
 		}
-		printf("[+] Stride  %s\n",stride.GetBase10());
+		printf("[+] Stride : %s\n",stride.GetBase10());
 	}
 	else	{
 		FLAGSTRIDE = 1;
@@ -796,7 +802,7 @@ int main(int argc, char **argv)	{
 	}
 	init_generator();
 	if(FLAGMODE == MODE_BSGS )	{
-		printf("[+] Mode  BSGS %s\n",bsgs_modes[FLAGBSGSMODE]);
+		printf("[+] Mode BSGS %s\n",bsgs_modes[FLAGBSGSMODE]);
 	}
 	
 	if(FLAGFILE == 0) {
@@ -805,7 +811,7 @@ int main(int argc, char **argv)	{
 	
 	if(FLAGMODE == MODE_ADDRESS && FLAGCRYPTO == CRYPTO_NONE) {	//When none crypto is defined the default search is for Bitcoin
 		FLAGCRYPTO = CRYPTO_BTC;
-		printf("[+] Setting search for ₿TC adddress \n");
+		printf("[+] Setting search for btc adddress\n");
 	}
 	if(FLAGRANGE) {
 		n_range_start.SetBase16(range_start);
@@ -816,7 +822,7 @@ int main(int argc, char **argv)	{
 		if(n_range_start.IsEqual(&n_range_end) == false ) {
 			if(  n_range_start.IsLower(&secp->order) &&  n_range_end.IsLowerOrEqual(&secp->order) )	{
 				if( n_range_start.IsGreater(&n_range_end)) {
-					fprintf(stderr,"[W] Opps, Start range can't be greater than the End range. Swapping them\n");
+					fprintf(stderr,"[W] Opps, start range can't be great than end range. Swapping them\n");
 					n_range_aux.Set(&n_range_start);
 					n_range_start.Set(&n_range_end);
 					n_range_end.Set(&n_range_aux);
@@ -825,12 +831,12 @@ int main(int argc, char **argv)	{
 				n_range_diff.Sub(&n_range_start);
 			}
 			else	{
-				fprintf(stderr,"[E] Start and End range can't be greater than N\nFallback to Random mode!\n");
+				fprintf(stderr,"[E] Start and End range can't be great than N\nFallback to random mode!\n");
 				FLAGRANGE = 0;
 			}
 		}
 		else	{
-			fprintf(stderr,"[E] Start and End range can't be the same\nFallback to Random mode!\n");
+			fprintf(stderr,"[E] Start and End range can't be the same\nFallback to random mode!\n");
 			FLAGRANGE = 0;
 		}
 	}
@@ -868,21 +874,21 @@ int main(int argc, char **argv)	{
 			}
 			
 			if(N_SEQUENTIAL_MAX < 1024)	{
-				fprintf(stderr,"[I] n value needs to be equal or greater than 1024, back to defaults\n");
+				fprintf(stderr,"[I] n value need to be equal or great than 1024, back to defaults\n");
 				FLAG_N = 0;
 				N_SEQUENTIAL_MAX = 0x100000000;
 			}
 			if(N_SEQUENTIAL_MAX % 1024 != 0)	{
-				fprintf(stderr,"[I] n value needs to be multiplier of  1024\n");
+				fprintf(stderr,"[I] n value need to be multiplier of  1024\n");
 				FLAG_N = 0;
 				N_SEQUENTIAL_MAX = 0x100000000;
 			}
 		}
-		printf("[+] N  %p\n",(void*)N_SEQUENTIAL_MAX);
+		printf("[+] N = %p\n",(void*)N_SEQUENTIAL_MAX);
 		if(FLAGMODE == MODE_MINIKEYS)	{
 			BSGS_N.SetInt32(DEBUGCOUNT);
 			if(FLAGBASEMINIKEY)	{
-				printf("[+] Base Minikey  %s\n",str_baseminikey);
+				printf("[+] Base Minikey : %s\n",str_baseminikey);
 			}
 			minikeyN = (char*) malloc(22);
 			checkpointer((void *)minikeyN,__FILE__,"malloc","minikeyN" ,__LINE__ -1);
@@ -912,18 +918,18 @@ int main(int argc, char **argv)	{
 		}
 		else	{
 			if(FLAGBITRANGE)	{	// Bit Range
-				printf("[+] Bit Range  %i\n",bitrange);
+				printf("[+] Bit Range %i\n",bitrange);
 			}
 			else	{
-				printf("[+] Range  \n");
+				printf("[+] Range \n");
 			}
 		}
 		if(FLAGMODE != MODE_MINIKEYS)	{
 			hextemp = n_range_start.GetBase16();
-			printf("[+] → From  0x%s\n",hextemp);
+			printf("[+] -- from : 0x%s\n",hextemp);
 			free(hextemp);
 			hextemp = n_range_end.GetBase16();
-			printf("[+] → To    0x%s\n",hextemp);
+			printf("[+] -- to   : 0x%s\n",hextemp);
 			free(hextemp);
 		}
 
@@ -933,22 +939,22 @@ int main(int argc, char **argv)	{
 			case MODE_ADDRESS:
 			case MODE_XPOINT:
 				if(!readFileAddress(fileName))	{
-					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n");
+					fprintf(stderr,"[E] Unenexpected error\n");
 					exit(EXIT_FAILURE);
 				}
 			break;
 			case MODE_VANITY:
 				if(!readFileVanity(fileName))	{
-					fprintf(stderr,"[0;31m[E] Unexpected error.are you sure the command syntax is correct and the file exists on path?use ./keyhunt -h for options\n");
+					fprintf(stderr,"[E] Unenexpected error\n");
 					exit(EXIT_FAILURE);
 				}
 			break;
 		}
 		
 		if(FLAGMODE != MODE_VANITY && !FLAGREADEDFILE1)	{
-			printf("[+] Sorting data please wait ¹ ² ³");
+			printf("[+] Sorting data ...");
 			_sort(addressTable,N);
-			printf(" Done! %" PRIu64 " values were loaded and sorted\n",N);
+			printf(" done! %" PRIu64 " values were loaded and sorted\n",N);
 			writeFileIfNeeded(fileName);
 		}
 	}
@@ -957,7 +963,7 @@ int main(int argc, char **argv)	{
 		printf("[+] Opening file %s\n",fileName);
 		fd = fopen(fileName,"rb");
 		if(fd == NULL)	{
-			fprintf(stderr,"[E] Can't open file(check the file exists on correct path) %s\n",fileName);
+			fprintf(stderr,"[E] Can't open file %s\n",fileName);
 			exit(EXIT_FAILURE);
 		}
 		aux = (char*) malloc(1024);
@@ -1033,7 +1039,7 @@ int main(int argc, char **argv)	{
 			printf("[+] Added %u points from file\n",bsgs_point_number);
 		}
 		else	{
-			fprintf(stderr,"[E] The file doesn't have any valid publickeys\n");
+			fprintf(stderr,"[E] The file don't have any valid publickeys\n");
 			exit(EXIT_FAILURE);
 		}
 		BSGS_N.SetInt32(0);
@@ -1088,13 +1094,13 @@ int main(int argc, char **argv)	{
 				n_range_diff.Set(&n_range_end);
 				n_range_diff.Sub(&n_range_start);
 				printf("[+] Bit Range %i\n",bitrange);
-				printf("[+] → From  0x%s\n",bit_range_str_min);
-				printf("[+] → To    0x%s\n",bit_range_str_max);
+				printf("[+] -- from : 0x%s\n",bit_range_str_min);
+				printf("[+] -- to   : 0x%s\n",bit_range_str_max);
 			}
 			else	{
 				printf("[+] Range \n");
-				printf("[+] → From  0x%s\n",range_start);
-				printf("[+] → To    0x%s\n",range_end);
+				printf("[+] -- from : 0x%s\n",range_start);
+				printf("[+] -- to   : 0x%s\n",range_end);
 			}
 		}
 		else	{	//Random start
@@ -1108,7 +1114,7 @@ int main(int argc, char **argv)	{
 
 
 		if(n_range_diff.IsLower(&BSGS_N) )	{
-			fprintf(stderr,"[E] The given range is small\n");
+			fprintf(stderr,"[E] the given range is small\n");
 			exit(EXIT_FAILURE);
 		}
 		
@@ -1174,7 +1180,7 @@ int main(int argc, char **argv)	{
 
 		
 		hextemp = BSGS_N.GetBase16();
-		printf("[+] N  0x%s\n",hextemp);
+		printf("[+] N = 0x%s\n",hextemp);
 		free(hextemp);
 		if(((uint64_t)(bsgs_m/256)) > 10000)	{
 			itemsbloom = (uint64_t)(bsgs_m / 256);
@@ -1230,13 +1236,13 @@ int main(int argc, char **argv)	{
 			pthread_mutex_init(&bloom_bP_mutex[i],NULL);
 #endif
 			if(bloom_init2(&bloom_bP[i],itemsbloom,0.000001)	== 1){
-				fprintf(stderr,"[E] Error bloom_init _ [%" PRIu64 "]\n",i);
+				fprintf(stderr,"[E] error bloom_init _ [%" PRIu64 "]\n",i);
 				exit(EXIT_FAILURE);
 			}
 			bloom_bP_totalbytes += bloom_bP[i].bytes;
 			//if(FLAGDEBUG) bloom_print(&bloom_bP[i]);
 		}
-		printf(" %.2f MB\n",(float)((float)(uint64_t)bloom_bP_totalbytes/(float)(uint64_t)1048576));
+		printf(": %.2f MB\n",(float)((float)(uint64_t)bloom_bP_totalbytes/(float)(uint64_t)1048576));
 
 
 		printf("[+] Bloom filter for %" PRIu64 " elements ",bsgs_m2);
@@ -1259,13 +1265,13 @@ int main(int argc, char **argv)	{
 			pthread_mutex_init(&bloom_bPx2nd_mutex[i],NULL);
 #endif
 			if(bloom_init2(&bloom_bPx2nd[i],itemsbloom2,0.000001)	== 1){
-				fprintf(stderr,"[E] Error bloom_init _ [%" PRIu64 "]\n",i);
+				fprintf(stderr,"[E] error bloom_init _ [%" PRIu64 "]\n",i);
 				exit(EXIT_FAILURE);
 			}
 			bloom_bP2_totalbytes += bloom_bPx2nd[i].bytes;
 			//if(FLAGDEBUG) bloom_print(&bloom_bPx2nd[i]);
 		}
-		printf(" %.2f MB\n",(float)((float)(uint64_t)bloom_bP2_totalbytes/(float)(uint64_t)1048576));
+		printf(": %.2f MB\n",(float)((float)(uint64_t)bloom_bP2_totalbytes/(float)(uint64_t)1048576));
 		
 
 #if defined(_WIN64) && !defined(__CYGWIN__)
@@ -1288,13 +1294,13 @@ int main(int argc, char **argv)	{
 			pthread_mutex_init(&bloom_bPx3rd_mutex[i],NULL);
 #endif
 			if(bloom_init2(&bloom_bPx3rd[i],itemsbloom3,0.000001)	== 1){
-				fprintf(stderr,"[E] Error bloom_init [%" PRIu64 "]\n",i);
+				fprintf(stderr,"[E] error bloom_init [%" PRIu64 "]\n",i);
 				exit(EXIT_FAILURE);
 			}
 			bloom_bP3_totalbytes += bloom_bPx3rd[i].bytes;
 			//if(FLAGDEBUG) bloom_print(&bloom_bPx3rd[i]);
 		}
-		printf(" %.2f MB\n",(float)((float)(uint64_t)bloom_bP3_totalbytes/(float)(uint64_t)1048576));
+		printf(": %.2f MB\n",(float)((float)(uint64_t)bloom_bP3_totalbytes/(float)(uint64_t)1048576));
 		//if(FLAGDEBUG) printf("[D] bloom_bP3_totalbytes : %" PRIu64 "\n",bloom_bP3_totalbytes);
 
 
@@ -1393,12 +1399,12 @@ int main(int argc, char **argv)	{
 					if(FLAGSKIPCHECKSUM == 0)	{
 						sha256((uint8_t*)bloom_bP[i].bf,bloom_bP[i].bytes,(uint8_t*)rawvalue);
 						if(memcmp(bloom_bP_checksums[i].data,rawvalue,32) != 0 || memcmp(bloom_bP_checksums[i].backup,rawvalue,32) != 0 )	{	/* Verification */
-							fprintf(stderr,"[E] Error checksum! File mismatch! %s\n",buffer_bloom_file);
+							fprintf(stderr,"[E] Error checksum file mismatch! %s\n",buffer_bloom_file);
 							exit(EXIT_FAILURE);
 						}
 					}
 					if(i % 64 == 0 )	{
-						printf("→");
+						printf(".");
 						fflush(stdout);
 					}
 				}
@@ -1448,12 +1454,12 @@ int main(int argc, char **argv)	{
 						if(FLAGSKIPCHECKSUM == 0)	{
 							sha256((uint8_t*)bloom_bP[i].bf,bloom_bP[i].bytes,(uint8_t*)rawvalue);
 							if(memcmp(bloom_bP_checksums[i].data,rawvalue,32) != 0 || memcmp(bloom_bP_checksums[i].backup,rawvalue,32) != 0 )	{	/* Verification */
-								fprintf(stderr,"[E] Error checksum! File mismatch! %s\n",buffer_bloom_file);
+								fprintf(stderr,"[E] Error checksum file mismatch! %s\n",buffer_bloom_file);
 								exit(EXIT_FAILURE);
 							}
 						}
 						if(i % 32 == 0 )	{
-							printf("→");
+							printf(".");
 							fflush(stdout);
 						}
 					}
@@ -1497,12 +1503,12 @@ int main(int argc, char **argv)	{
 					if(FLAGSKIPCHECKSUM == 0)	{								
 						sha256((uint8_t*)bloom_bPx2nd[i].bf,bloom_bPx2nd[i].bytes,(uint8_t*)rawvalue);
 						if(memcmp(bloom_bPx2nd_checksums[i].data,rawvalue,32) != 0 || memcmp(bloom_bPx2nd_checksums[i].backup,rawvalue,32) != 0 )	{		/* Verification */
-							fprintf(stderr,"[E] Error checksum! File mismatch! %s\n",buffer_bloom_file);
+							fprintf(stderr,"[E] Error checksum file mismatch! %s\n",buffer_bloom_file);
 							exit(EXIT_FAILURE);
 						}
 					}
 					if(i % 64 == 0)	{
-						printf("→");
+						printf(".");
 						fflush(stdout);
 					}
 				}
@@ -1547,11 +1553,11 @@ int main(int argc, char **argv)	{
 				if(FLAGSKIPCHECKSUM == 0)	{
 					sha256((uint8_t*)bPtable,bytes,(uint8_t*)checksum_backup);
 					if(memcmp(checksum,checksum_backup,32) != 0)	{
-						fprintf(stderr,"[E] Error checksum! File mismatch! %s\n",buffer_bloom_file);
+						fprintf(stderr,"[E] Error checksum file mismatch! %s\n",buffer_bloom_file);
 						exit(EXIT_FAILURE);
 					}
 				}
-				printf("¹ ² ³ Done!\n");
+				printf("... Done!\n");
 				fclose(fd_aux3);
 				FLAGREADEDFILE3 = 1;
 			}
@@ -1587,12 +1593,12 @@ int main(int argc, char **argv)	{
 					if(FLAGSKIPCHECKSUM == 0)	{							
 						sha256((uint8_t*)bloom_bPx3rd[i].bf,bloom_bPx3rd[i].bytes,(uint8_t*)rawvalue);
 						if(memcmp(bloom_bPx3rd_checksums[i].data,rawvalue,32) != 0 || memcmp(bloom_bPx3rd_checksums[i].backup,rawvalue,32) != 0 )	{		/* Verification */
-							fprintf(stderr,"[E] Error checksum! File mismatch! %s\n",buffer_bloom_file);
+							fprintf(stderr,"[E] Error checksum file mismatch! %s\n",buffer_bloom_file);
 							exit(EXIT_FAILURE);
 						}
 					}
 					if(i % 64 == 0)	{
-						printf("→");
+						printf(".");
 						fflush(stdout);
 					}
 				}
@@ -1630,7 +1636,7 @@ int main(int argc, char **argv)	{
 					THREADCYCLES++;
 				}
 				
-				printf("\r[+] processing %lu/%lu bP points → %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
+				printf("\r[+] processing %lu/%lu bP points : %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
 				fflush(stdout);
 				
 #if defined(_WIN64) && !defined(__CYGWIN__)
@@ -1686,7 +1692,7 @@ int main(int argc, char **argv)	{
 					}
 
 					if(OLDFINISHED_ITEMS != FINISHED_ITEMS)	{
-						printf("\r[+] processing %lu/%lu bP points → %i%%\r",FINISHED_ITEMS,bsgs_m2,(int) (((double)FINISHED_ITEMS/(double)bsgs_m2)*100));
+						printf("\r[+] processing %lu/%lu bP points : %i%%\r",FINISHED_ITEMS,bsgs_m2,(int) (((double)FINISHED_ITEMS/(double)bsgs_m2)*100));
 						fflush(stdout);
 						OLDFINISHED_ITEMS = FINISHED_ITEMS;
 					}
@@ -1710,7 +1716,7 @@ int main(int argc, char **argv)	{
 						}
 					}
 				}while(FINISHED_THREADS_COUNTER < THREADCYCLES);
-				printf("\r[+] processing %lu/%lu bP points → 100%%     \n",bsgs_m2,bsgs_m2);
+				printf("\r[+] processing %lu/%lu bP points : 100%%     \n",bsgs_m2,bsgs_m2);
 				
 				free(tid);
 				free(bPload_mutex);
@@ -1741,7 +1747,7 @@ int main(int argc, char **argv)	{
 					//if(FLAGDEBUG) printf("[D] PERTHREAD_R: %lu\n",PERTHREAD_R);
 				}
 				
-				printf("\r[+] processing %lu/%lu bP points → %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
+				printf("\r[+] processing %lu/%lu bP points : %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
 				fflush(stdout);
 				
 #if defined(_WIN64) && !defined(__CYGWIN__)
@@ -1800,7 +1806,7 @@ int main(int argc, char **argv)	{
 						}
 					}
 					if(OLDFINISHED_ITEMS != FINISHED_ITEMS)	{
-						printf("\r[+] processing %lu/%lu bP points → %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
+						printf("\r[+] processing %lu/%lu bP points : %i%%\r",FINISHED_ITEMS,bsgs_m,(int) (((double)FINISHED_ITEMS/(double)bsgs_m)*100));
 						fflush(stdout);
 						OLDFINISHED_ITEMS = FINISHED_ITEMS;
 					}
@@ -1825,7 +1831,7 @@ int main(int argc, char **argv)	{
 					}
 					
 				}while(FINISHED_THREADS_COUNTER < THREADCYCLES);
-				printf("\r[+] processing %lu/%lu bP points → 100%%     \n",bsgs_m,bsgs_m);
+				printf("\r[+] processing %lu/%lu bP points : 100%%     \n",bsgs_m,bsgs_m);
 				
 				free(tid);
 				free(bPload_mutex);
@@ -1835,7 +1841,7 @@ int main(int argc, char **argv)	{
 		}
 		
 		if(!FLAGREADEDFILE1 || !FLAGREADEDFILE2 || !FLAGREADEDFILE4)	{
-			printf("[+] Making checksums ¹ ² ³ ");
+			printf("[+] Making checkums .. ");
 			fflush(stdout);
 		}	
 		if(!FLAGREADEDFILE1)	{
@@ -1843,28 +1849,28 @@ int main(int argc, char **argv)	{
 				sha256((uint8_t*)bloom_bP[i].bf, bloom_bP[i].bytes,(uint8_t*) bloom_bP_checksums[i].data);
 				memcpy(bloom_bP_checksums[i].backup,bloom_bP_checksums[i].data,32);
 			}
-			printf("→");
+			printf(".");
 		}
 		if(!FLAGREADEDFILE2)	{
 			for(i = 0; i < 256 ; i++)	{
 				sha256((uint8_t*)bloom_bPx2nd[i].bf, bloom_bPx2nd[i].bytes,(uint8_t*) bloom_bPx2nd_checksums[i].data);
 				memcpy(bloom_bPx2nd_checksums[i].backup,bloom_bPx2nd_checksums[i].data,32);
 			}
-			printf("→");
+			printf(".");
 		}
 		if(!FLAGREADEDFILE4)	{
 			for(i = 0; i < 256 ; i++)	{
 				sha256((uint8_t*)bloom_bPx3rd[i].bf, bloom_bPx3rd[i].bytes,(uint8_t*) bloom_bPx3rd_checksums[i].data);
 				memcpy(bloom_bPx3rd_checksums[i].backup,bloom_bPx3rd_checksums[i].data,32);
 			}
-			printf("→");
+			printf(".");
 		}
 		if(!FLAGREADEDFILE1 || !FLAGREADEDFILE2 || !FLAGREADEDFILE4)	{
 			printf(" done\n");
 			fflush(stdout);
 		}	
 		if(!FLAGREADEDFILE3)	{
-			printf("[+] Sorting %lu elements ¹ ² ³ ",bsgs_m3);
+			printf("[+] Sorting %lu elements... ",bsgs_m3);
 			fflush(stdout);
 			bsgs_sort(bPtable,bsgs_m3);
 			sha256((uint8_t*)bPtable, bytes,(uint8_t*) checksum);
@@ -1903,7 +1909,7 @@ int main(int argc, char **argv)	{
 							exit(EXIT_FAILURE);
 						}
 						if(i % 64 == 0)	{
-							printf("→");
+							printf(".");
 							fflush(stdout);
 						}
 					}
@@ -1941,7 +1947,7 @@ int main(int argc, char **argv)	{
 							exit(EXIT_FAILURE);
 						}
 						if(i % 64 == 0)	{
-							printf("→");
+							printf(".");
 							fflush(stdout);
 						}
 					}
@@ -1959,7 +1965,7 @@ int main(int argc, char **argv)	{
 				snprintf(buffer_bloom_file,1024,"keyhunt_bsgs_2_%" PRIu64 ".tbl",bsgs_m3);
 				fd_aux3 = fopen(buffer_bloom_file,"wb");
 				if(fd_aux3 != NULL)	{
-					printf("[+] Writing bP Table to file %s ¹ ² ³ ",buffer_bloom_file);
+					printf("[+] Writing bP Table to file %s .. ",buffer_bloom_file);
 					fflush(stdout);
 					readed = fwrite(bPtable,bytes,1,fd_aux3);
 					if(readed != 1)	{
@@ -2004,7 +2010,7 @@ int main(int argc, char **argv)	{
 							exit(EXIT_FAILURE);
 						}
 						if(i % 64 == 0)	{
-							printf("→");
+							printf(".");
 							fflush(stdout);
 						}
 					}
@@ -2194,10 +2200,10 @@ int main(int argc, char **argv)	{
 				
 				if(pretotal.IsLower(&int_limits[0]))	{
 					if(FLAGMATRIX)	{
-						sprintf(buffer,"\n[+] Total %s keys in %s seconds: %s keys/s\n\n",str_total,str_seconds,str_pretotal);
+						sprintf(buffer,"[+] Total %s keys in %s seconds: %s keys/s\n",str_total,str_seconds,str_pretotal);
 					}
 					else	{
-						sprintf(buffer,"\r[+] Total %s keys in %s seconds: %s keys/s\r\n",str_total,str_seconds,str_pretotal);
+						sprintf(buffer,"\r[+] Total %s keys in %s seconds: %s keys/s\r",str_total,str_seconds,str_pretotal);
 					}
 				}
 				else	{
@@ -2261,7 +2267,7 @@ void pubkeytopubaddress_dst(char *pkey,int length,char *dst)	{
 	sha256((uint8_t*)digest, 21,(uint8_t*) digest+21);
 	sha256((uint8_t*)digest+21, 32,(uint8_t*) digest+21);
 	if(!b58enc(dst,&pubaddress_size,digest,25)){
-		fprintf(stderr,"Error b58enc\n");
+		fprintf(stderr,"error b58enc\n");
 	}
 }
 
@@ -2273,7 +2279,7 @@ void rmd160toaddress_dst(char *rmd,char *dst){
 	sha256((uint8_t*)digest, 21,(uint8_t*) digest+21);
 	sha256((uint8_t*)digest+21, 32,(uint8_t*) digest+21);
 	if(!b58enc(dst,&pubaddress_size,digest,25)){
-		fprintf(stderr,"Error b58enc\n");
+		fprintf(stderr,"error b58enc\n");
 	}
 }
 
@@ -2296,7 +2302,7 @@ char *pubkeytopubaddress(char *pkey,int length)	{
 	sha256((uint8_t*)digest+21, 32,(uint8_t*) digest+21);
 	//digest [0 +RMD160 20 bytes+SHA256 32 bytes+....0]
 	if(!b58enc(pubaddress,&pubaddress_size,digest,25)){
-		fprintf(stderr,"Error b58enc\n");
+		fprintf(stderr,"error b58enc\n");
 	}
 	free(digest);
 	return pubaddress;	// pubaddress need to be free by te caller funtion
@@ -2412,12 +2418,12 @@ void *thread_process_minikeys(void *vargp)	{
 		if(continue_flag)	{
 			count = 0;
 			if(FLAGMATRIX)	{
-					printf("[+] Base minikey  %s     \n",minikey2check);
+					printf("[+] Base minikey: %s     \n",minikey2check);
 					fflush(stdout);
 			}
 			else	{
 				if(!FLAGQUIET)	{
-					printf("\r[+] Base minikey  %s     \r",minikey2check);
+					printf("\r[+] Base minikey: %s     \r",minikey2check);
 					fflush(stdout);
 				}
 			}
@@ -2475,10 +2481,10 @@ void *thread_process_minikeys(void *vargp)	{
 								rmd160toaddress_dst(publickeyhashrmd160_uncompress[k],address[k]);
 								minikeys[k][22] = '\0';
 								if(keys != NULL)	{
-									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\a",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 									fclose(keys);
 								}
-								printf("\nHIT!! Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\a",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+								printf("\n[*] HIT!! Private Key: %s\n[*] pubkey: %s\n[*] minikey: %s\n[*] address: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 								ReleaseMutex(write_keys);
 #else
@@ -2564,14 +2570,14 @@ void *thread_process(void *vargp)	{
 			count = 0;
 			if(FLAGMATRIX)	{
 					hextemp = key_mpz.GetBase16();
-					printf("Base key:  %s thread %i\n",hextemp,thread_number);
+					printf("Base key: %s thread %i\n",hextemp,thread_number);
 					fflush(stdout);
 					free(hextemp);
 			}
 			else	{
 				if(FLAGQUIET == 0){
 					hextemp = key_mpz.GetBase16();
-					printf("\rBase key:  %s     \r",hextemp);
+					printf("\rBase key: %s     \r",hextemp);
 					fflush(stdout);
 					free(hextemp);
 					THREADOUTPUT = 1;
@@ -3174,14 +3180,14 @@ void *thread_process_vanity(void *vargp)	{
 			count = 0;
 			if(FLAGMATRIX)	{
 					hextemp = key_mpz.GetBase16();
-					printf("Base key:  %s thread %i\n",hextemp,thread_number);
+					printf("Base key: %s thread %i\n",hextemp,thread_number);
 					fflush(stdout);
 					free(hextemp);
 			}
 			else	{
 				if(FLAGQUIET == 0)	{
 					hextemp = key_mpz.GetBase16();
-					printf("\rBase key:  %s     \r",hextemp);
+					printf("\rBase key: %s     \r",hextemp);
 					fflush(stdout);
 					free(hextemp);
 					THREADOUTPUT = 1;
@@ -3839,14 +3845,14 @@ void *thread_process_bsgs(void *vargp)	{
 		
 		if(FLAGMATRIX)	{
 			aux_c = base_key.GetBase16();
-			printf("[+] Thread  0x%s \n",aux_c);
+			printf("[+] Thread 0x%s \n",aux_c);
 			fflush(stdout);
 			free(aux_c);
 		}
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread  0x%s   \r",aux_c);
+				printf("\r[+] Thread 0x%s   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -3942,7 +3948,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
+								printf("[+] Thread Key found privkey %s   \n",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -3954,7 +3960,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey: %s\nPublickey: %s\n\a",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -3970,7 +3976,7 @@ pn.y.ModAdd(&GSn[i].y);
 									salir &= bsgs_found[l];
 								}
 								if(salir)	{
-									printf("All points were found\n\a");
+									printf("All points were found\n");
 									exit(EXIT_FAILURE);
 								}
 							} //End if second check
@@ -4068,17 +4074,15 @@ void *thread_process_bsgs_random(void *vargp)	{
 #endif
 
 		if(FLAGMATRIX)	{
-				if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("[+] Thread  0x%s  \n",aux_c);
+				printf("[+] Thread 0x%s  \n",aux_c);
 				fflush(stdout);
 				free(aux_c);
-				}
 		}
 		else{
-			if(FLAGQUIET == 1){
+			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread  0x%s  \r",aux_c);
+				printf("\r[+] Thread 0x%s  \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -4193,7 +4197,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+]  Thread Key found privkey %s     \n\a",hextemp);
+								printf("[+] Thread Key found privkey %s    \n",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -4205,7 +4209,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey: %s\nPublickey: %s\n\a",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -4222,7 +4226,7 @@ pn.y.ModAdd(&GSn[i].y);
 									salir &= bsgs_found[l];
 								}
 								if(salir)	{
-									printf("All points were found\n\a");
+									printf("All points were found\n");
 									exit(EXIT_FAILURE);
 								}
 							} //End if second check
@@ -4877,14 +4881,14 @@ void *thread_process_bsgs_dance(void *vargp)	{
 			
 		if(FLAGMATRIX)	{
 			aux_c = base_key.GetBase16();
-			printf("[+] Thread  0x%s \n",aux_c);
+			printf("[+] Thread 0x%s \n",aux_c);
 			fflush(stdout);
 			free(aux_c);
 		}
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread  0x%s   \r",aux_c);
+				printf("\r[+] Thread 0x%s   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -4998,7 +5002,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
+								printf("[+] Thread Key found privkey %s   \n",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -5010,7 +5014,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey: %s\nPublickey: %s\n\a",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -5027,7 +5031,7 @@ pn.y.ModAdd(&GSn[i].y);
 									salir &= bsgs_found[l];
 								}
 								if(salir)	{
-									printf("All points were found\n\a");
+									printf("All points were found\n");
 									exit(EXIT_FAILURE);
 								}
 							} //End if second check
@@ -5137,14 +5141,14 @@ void *thread_process_bsgs_backward(void *vargp)	{
 		
 		if(FLAGMATRIX)	{
 			aux_c = base_key.GetBase16();
-			printf("[+] Thread  0x%s \n",aux_c);
+			printf("[+] Thread 0x%s \n",aux_c);
 			fflush(stdout);
 			free(aux_c);
 		}
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread  0x%s   \r",aux_c);
+				printf("\r[+] Thread 0x%s   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -5256,7 +5260,7 @@ pn.y.ModAdd(&GSn[i].y);
 							r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 							if(r)	{
 								hextemp = keyfound.GetBase16();
-								printf("[+]  Thread Key found privkey %s    \n\a",hextemp);
+								printf("[+] Thread Key found privkey %s   \n",hextemp);
 								point_found = secp->ComputePublicKey(&keyfound);
 								aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 								printf("[+] Publickey %s\n",aux_c);
@@ -5268,7 +5272,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey: %s\nPublickey: %s\n\a",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -5285,7 +5289,7 @@ pn.y.ModAdd(&GSn[i].y);
 									salir &= bsgs_found[l];
 								}
 								if(salir)	{
-									printf("All points were found\n\a");
+									printf("All points were found\n");
 									exit(EXIT_FAILURE);
 								}
 							} //End if second check
@@ -5420,18 +5424,15 @@ void *thread_process_bsgs_both(void *vargp)	{
 
 		
 		if(FLAGMATRIX)	{
-			if(FLAGQUIET == 0){
 			aux_c = base_key.GetBase16();
-			printf("[+] Thread  0x%s \n",aux_c);
+			printf("[+] Thread 0x%s \n",aux_c);
 			fflush(stdout);
 			free(aux_c);
-			}
 		}
-		
 		else	{
-			if(FLAGQUIET == 1){
+			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread  0x%s   \r",aux_c);
+				printf("\r[+] Thread 0x%s   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -5543,7 +5544,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 								r = bsgs_secondcheck(&base_key,((j*1024) + i),k,&keyfound);
 								if(r)	{
 									hextemp = keyfound.GetBase16();
-									printf("[+]  Thread Key found privkey %s   \n\a",hextemp);
+									printf("[+] Thread Key found privkey %s   \n",hextemp);
 									point_found = secp->ComputePublicKey(&keyfound);
 									aux_c = secp->GetPublicKeyHex(OriginalPointsBSGScompressed[k],point_found);
 									printf("[+] Publickey %s\n",aux_c);
@@ -5555,7 +5556,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 
 									filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 									if(filekey != NULL)	{
-										fprintf(filekey,"Key found privkey: %s\nPublickey: %s\n\a",hextemp,aux_c);
+										fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
 										fclose(filekey);
 									}
 									free(hextemp);
@@ -5572,7 +5573,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 										salir &= bsgs_found[l];
 									}
 									if(salir)	{
-										printf("All points were found\n\a");
+										printf("All points were found\n");
 										exit(EXIT_FAILURE);
 									}
 								} //End if second check
@@ -5738,11 +5739,11 @@ void sha256sse_23(uint8_t *src0, uint8_t *src1, uint8_t *src2, uint8_t *src3, ui
 }
 
 void menu() {
-	printf("\n------------------------------------------------------Options-------------------------------------------------------\n\n");
+	printf("\nUsage:\n");
 	printf("-h          show this help\n");
 	printf("-B Mode     BSGS now have some modes <sequential, backward, both, random, dance>\n");
 	printf("-b bits     For some puzzles you only need some numbers of bits in the test keys.\n");
-	printf("-c crypto   Search for specific crypto. <₿tc, eth> valid only w/ -m address\n");
+	printf("-c crypto   Search for specific crypto. <btc, eth> valid only w/ -m address\n");
 	printf("-C mini     Set the minikey Base only 22 character minikeys, ex: SRPqx8QiwnW4WNWnTVa2W5\n");
 	printf("-8 alpha    Set the bas58 alphabet for minikeys\n");
 	printf("-e          Enable endomorphism search (Only for address, rmd160 and vanity)\n");
@@ -5759,17 +5760,15 @@ void menu() {
 	printf("-R          Random, this is the default behavior\n");
 	printf("-s ns       Number of seconds for the stats output, 0 to omit output.\n");
 	printf("-S          S is for SAVING in files BSGS data (Bloom filters and bPtable)\n");
-	printf("-6          to skip sha256 Checksum on data files\n");
+	printf("-6          to skip sha256 Checksum on data files");
 	printf("-t tn       Threads number, must be a positive integer\n");
 	printf("-v value    Search for vanity Address, only with -m vanity\n");
 	printf("-z value    Bloom size multiplier, only address,rmd160,vanity, xpoint, value >= 1\n");
-	printf("\n------------------------------------------------------Example-------------------------------------------------------\n\n");
-	printf("keyhunt.exe -m rmd160 -f tests/unsolvedpuzzles.rmd -b 66 -l compress -R -q -t 8\n\n");
+	printf("\nExample:\n\n");
+	printf("./keyhunt -m rmd160 -f tests/unsolvedpuzzles.rmd -b 66 -l compress -R -q -t 8\n\n");
 	printf("This line runs the program with 8 threads from the range 20000000000000000 to 40000000000000000 without stats output\n\n");
-	printf("------------------------------------------------------Developer-----------------------------------------------------\n\n");
-	printf("Developed by AlbertoBSD\tTips ₿TC: 1Coffee1jV4gB5gaXfHgSHDz9xx9QSECVW\n");
+	printf("Developed by AlbertoBSD\tTips BTC: 1Coffee1jV4gB5gaXfHgSHDz9xx9QSECVW\n");
 	printf("Thanks to Iceland always helping and sharing his ideas.\nTips to Iceland: bc1q39meky2mn5qjq704zz0nnkl0v7kj4uz6r529at\n\n");
-	printf("-------------------------------------------------visit https://www.cryptoxploit.com for tutorials-------------------\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -5820,10 +5819,11 @@ void writevanitykey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("VANITYKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("\nVanity Private Key: %s\npubkey:  %s\nAddress: %s\nrmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
+	printf("\n[*] Vanity Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
+	printf("--------------------------------------------------\n");
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -5982,7 +5982,7 @@ int minimum_same_bytes(unsigned char* A,unsigned char* B, int length) {
 
 void checkpointer(void *ptr,const char *file,const char *function,const  char *name,int line)	{
 	if(ptr == NULL)	{
-		fprintf(stderr,"[E] Error in file %s, %s pointer %s on line %i\n",file,function,name,line); 
+		fprintf(stderr,"[E] error in file %s, %s pointer %s on line %i\n",file,function,name,line); 
 		exit(EXIT_FAILURE);
 	}
 }
@@ -6007,10 +6007,11 @@ void writekey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("\nHit! Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\a",hextemp,public_key_hex,address,hexrmd);
+	printf("\n[*] Hit! Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
+	printf("--------------------------------------------------\n");
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6039,11 +6040,10 @@ void writekeyeth(Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\naddress: %s\n",hextemp,address);
+		fprintf(keys,"Private Key: %s\naddress: %s\n\n",hextemp,address);
 		fclose(keys);
 	}
-	printf("\a");
-	printf("[0;32m\n Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
+	printf("\n[*] Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
 #else
@@ -6071,7 +6071,7 @@ bool isValidBase58String(char *str)	{
 bool processOneVanity()	{
 	int i,k;
 	if(vanity_rmd_targets == 0)	{
-		fprintf(stderr,"[E] There aren't any vanity targets?\n");
+		fprintf(stderr,"[E] There aren't any vanity targets\n");
 		return false;
 	}
 
@@ -6095,7 +6095,7 @@ bool readFileVanity(char *fileName)	{
 	fileDescriptor = fopen(fileName,"r");
 	if(fileDescriptor == NULL)	{
 		if(vanity_rmd_targets == 0)	{
-			fprintf(stderr,"[E] There aren't any vanity targets?\n");
+			fprintf(stderr,"[E] There aren't any vanity targets\n");
 			return false;
 		}
 	}
@@ -6110,7 +6110,7 @@ bool readFileVanity(char *fileName)	{
 						addvanity(aux);
 					}
 					else	{
-						fprintf(stderr,"[E] the string \"%s\" is not valid Base58, omitting it\n",aux);
+						fprintf(stderr,"[E] the string \"%s\" is not valid Base58, omiting it\n",aux);
 					}
 				}
 			}
@@ -6166,7 +6166,7 @@ bool readFileAddress(char *fileName)	{
 			//read bloom checksum (expected value to be checked)
 			bytesRead = fread(bloomChecksum,1,32,fileDescriptor);
 			if(bytesRead != 32)	{
-				fprintf(stderr,"[E] Error reading file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore reading file, code line %i\n",__LINE__ - 2);
 				fclose(fileDescriptor);
 				return false;
 			}
@@ -6226,20 +6226,20 @@ bool readFileAddress(char *fileName)	{
 			
 			bytesRead = fread(dataChecksum,1,32,fileDescriptor);
 			if(bytesRead != 32)	{
-				fprintf(stderr,"[E] Error reading file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore reading file, code line %i\n",__LINE__ - 2);
 				fclose(fileDescriptor);
 				return false;
 			}
 			
 			bytesRead = fread(&dataSize,1,sizeof(uint64_t),fileDescriptor);
 			if(bytesRead != sizeof(uint64_t))	{
-				fprintf(stderr,"[E] Error reading file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore reading file, code line %i\n",__LINE__ - 2);
 				fclose(fileDescriptor);
 				return false; 
 			}
 			N = dataSize / sizeof(struct address_value);
 	
-			printf("[+] Allocating memory for %" PRIu64 " elements  %.2f MB\n",N,(double)(((double) sizeof(struct address_value)*N)/(double)1048576));
+			printf("[+] Allocating memory for %" PRIu64 " elements: %.2f MB\n",N,(double)(((double) sizeof(struct address_value)*N)/(double)1048576));
 			
 			addressTable = (struct address_value*) malloc(dataSize);
 			if(addressTable == NULL)	{
@@ -6403,7 +6403,7 @@ bool forceReadFileAddressEth(char *fileName)	{
 	MAXLENGTHADDRESS = 20;		/*20 bytes beacuase we only need the data in binary*/
 	N = numberItems;
 	
-	printf("[+] Allocating memory for %" PRIu64 " elements  %.2f MB\n",numberItems,(double)(((double) sizeof(struct address_value)*numberItems)/(double)1048576));
+	printf("[+] Allocating memory for %" PRIu64 " elements: %.2f MB\n",numberItems,(double)(((double) sizeof(struct address_value)*numberItems)/(double)1048576));
 	addressTable = (struct address_value*) malloc(sizeof(struct address_value)*numberItems);
 	checkpointer((void *)addressTable,__FILE__,"malloc","addressTable" ,__LINE__ -1 );
 	
@@ -6482,7 +6482,7 @@ bool forceReadFileXPoint(char *fileName)	{
 
 	MAXLENGTHADDRESS = 20;		/*20 bytes beacuase we only need the data in binary*/
 	
-	printf("[+] Allocating memory for %" PRIu64 " elements  %.2f MB\n",numberItems,(double)(((double) sizeof(struct address_value)*numberItems)/(double)1048576));
+	printf("[+] Allocating memory for %" PRIu64 " elements: %.2f MB\n",numberItems,(double)(((double) sizeof(struct address_value)*numberItems)/(double)1048576));
 	addressTable = (struct address_value*) malloc(sizeof(struct address_value)*numberItems);
 	checkpointer((void *)addressTable,__FILE__,"malloc","addressTable" ,__LINE__ - 1);
 	
@@ -6510,7 +6510,7 @@ bool forceReadFileXPoint(char *fileName)	{
 							bloom_add(&bloom,rawvalue,MAXLENGTHADDRESS);
 						}
 						else	{
-							fprintf(stderr,"[E] Error hexs2bin\n");
+							fprintf(stderr,"[E] error hexs2bin\n");
 						}
 					break;
 					case 66:	/*Compress publickey*/
@@ -6520,7 +6520,7 @@ bool forceReadFileXPoint(char *fileName)	{
 							bloom_add(&bloom,rawvalue,MAXLENGTHADDRESS);
 						}
 						else	{
-							fprintf(stderr,"[E] Error hexs2bin\n");
+							fprintf(stderr,"[E] error hexs2bin\n");
 						}
 					break;
 					case 130:	/* Uncompress publickey length*/
@@ -6530,11 +6530,11 @@ bool forceReadFileXPoint(char *fileName)	{
 								bloom_add(&bloom,rawvalue,MAXLENGTHADDRESS);
 						}
 						else	{
-							fprintf(stderr,"[E] Error hexs2bin\n");
+							fprintf(stderr,"[E] error hexs2bin\n");
 						}
 					break;
 					default:
-						fprintf(stderr,"[E] Omitting line unknown length size %li: %s\n",lenaux,aux);
+						fprintf(stderr,"[E] Omiting line unknow length size %li: %s\n",lenaux,aux);
 					break;
 				}
 			}
@@ -6544,7 +6544,7 @@ bool forceReadFileXPoint(char *fileName)	{
 			freetokenizer(&tokenizer_xpoint);
 		}
 		else	{
-			fprintf(stderr,"[E] Omitting line : %s\n",aux);
+			fprintf(stderr,"[E] Omiting line : %s\n",aux);
 			N--;
 		}
 		i++;
@@ -6563,17 +6563,17 @@ bool initBloomFilter(struct bloom *bloom_arg,uint64_t items_bloom)	{
 	printf("[+] Bloom filter for %" PRIu64 " elements.\n",items_bloom);
 	if(items_bloom <= 10000)	{
 		if(bloom_init2(bloom_arg,10000,0.000001) == 1){
-			fprintf(stderr,"[E] Error bloom_init for 10000 elements.\n");
+			fprintf(stderr,"[E] error bloom_init for 10000 elements.\n");
 			r = false;
 		}
 	}
 	else	{
 		if(bloom_init2(bloom_arg,FLAGBLOOMMULTIPLIER*items_bloom,0.000001)	== 1){
-			fprintf(stderr,"[E] Error bloom_init for %" PRIu64 " elements.\n",items_bloom);
+			fprintf(stderr,"[E] error bloom_init for %" PRIu64 " elements.\n",items_bloom);
 			r = false;
 		}
 	}
-	printf("[+] Loading data to the bloomfilter total  %.2f MB\n",(double)(((double) bloom_arg->bytes)/(double)1048576));
+	printf("[+] Loading data to the bloomfilter total: %.2f MB\n",(double)(((double) bloom_arg->bytes)/(double)1048576));
 	return r;
 }
 
@@ -6614,20 +6614,20 @@ void writeFileIfNeeded(const char *fileName)	{
 			
 
 			sha256((uint8_t*)bloom.bf,bloom.bytes,(uint8_t*)bloomChecksum);
-			printf("→");
+			printf(".");
 			bytesWrite = fwrite(bloomChecksum,1,32,fileDescriptor);
 			if(bytesWrite != 32)	{
-				fprintf(stderr,"[E] Error writing file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore writing file, code line %i\n",__LINE__ - 2);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");
+			printf(".");
 			
 			bytesWrite = fwrite(&bloom,1,sizeof(struct bloom),fileDescriptor);
 			if(bytesWrite != sizeof(struct bloom))	{
 				fprintf(stderr,"[E] Error writing file, code line %i\n",__LINE__ - 2);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");
+			printf(".");
 			
 			bytesWrite = fwrite(bloom.bf,1,bloom.bytes,fileDescriptor);
 			if(bytesWrite != bloom.bytes)	{
@@ -6635,7 +6635,7 @@ void writeFileIfNeeded(const char *fileName)	{
 				fclose(fileDescriptor);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");
+			printf(".");
 			
 			/*
 			if(FLAGDEBUG)	{
@@ -6649,28 +6649,28 @@ void writeFileIfNeeded(const char *fileName)	{
 			
 			
 			sha256((uint8_t*)addressTable,dataSize,(uint8_t*)dataChecksum);
-			printf("→");
+			printf(".");
 
 			bytesWrite = fwrite(dataChecksum,1,32,fileDescriptor);
 			if(bytesWrite != 32)	{
-				fprintf(stderr,"[E] Error writing file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore writing file, code line %i\n",__LINE__ - 2);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");	
+			printf(".");	
 			
 			bytesWrite = fwrite(&dataSize,1,sizeof(uint64_t),fileDescriptor);
 			if(bytesWrite != sizeof(uint64_t))	{
-				fprintf(stderr,"[E] Error writing file, code line %i\n",__LINE__ - 2);
+				fprintf(stderr,"[E] Errore writing file, code line %i\n",__LINE__ - 2);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");
+			printf(".");
 			
 			bytesWrite = fwrite(addressTable,1,dataSize,fileDescriptor);
 			if(bytesWrite != dataSize)	{
 				fprintf(stderr,"[E] Error writing file, code line %i\n",__LINE__ - 2);
 				exit(EXIT_FAILURE);
 			}
-			printf("→");
+			printf(".");
 			
 			FLAGREADEDFILE1 = 1;	
 			fclose(fileDescriptor);		
