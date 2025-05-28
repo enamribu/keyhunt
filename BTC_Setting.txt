@@ -1,5 +1,9 @@
 ****************** ADDRESS MODE ******************
-./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -l compress -m address -c btc -f tests/btc.txt -t 35 -R
+./keyhunt -r 1000000000000000000:1200000000000000000 -l compress -m address -c btc -f tests/btc.txt -t 35 -R
+./keyhunt -r 1200000000000000001:1400000000000000000 -l compress -m address -c btc -f tests/btc.txt -t 35 -R
+./keyhunt -r 1400000000000000001:1600000000000000000 -l compress -m address -c btc -f tests/btc.txt -t 35 -R
+./keyhunt -r 1600000000000000001:1800000000000000000 -l compress -m address -c btc -f tests/btc.txt -t 35 -R
+./keyhunt -r 1800000000000000001:2000000000000000000 -l compress -m address -c btc -f tests/btc.txt -t 35 -R
 ./keyhunt -r 10000000007022fb868:1ffffffffffffffffff -l compress -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
 ****************** BSGS MODE ******************
 ./keyhunt -r 40000000000000005d3ab1ec5484000000:7fffffffffffffffffffffffffffffffff -l compress -m bsgs -f tests/135.txt -t 35 -k 20 -R -q -s 10
