@@ -5,6 +5,10 @@
 ./keyhunt -r 1e9db22d0c563003f41:1ffffffffffffffffff -l compress -m address -c btc -f tests/btc.txt -t 35 -R
 ./keyhunt -r 1000000000000000000:1ffffffffffffffffff -l compress -m address -c btc -f tests/btc.txt -t 35 -R -q -s 10
 ****************** BSGS MODE ******************
+./keyhunt -r 1000000000000000000000000000000000000:14b851eb851eb851eb851eb851eb851eb851f -l compress -m bsgs -f tests/145.txt -t 35 -k 20 -R -q -s 10
+./keyhunt -r 14b851eb851eb851eb851eb851eb851eb851f:1970a3d70a3d70a3d70a3d70a3d70a3d70a40 -l compress -m bsgs -f tests/145.txt -t 35 -k 20 -R -q -s 10
+./keyhunt -r 1970a3d70a3d70a3d70a3d70a3d70a3d70a40:1e28f5c28f5c28f5c28f5c28f5c28f5c28f61 -l compress -m bsgs -f tests/145.txt -t 35 -k 20 -R -q -s 10
+./keyhunt -r 1e28f5c28f5c28f5c28f5c28f5c28f5c28f61:1ffffffffffffffffffffffffffffffffffff -l compress -m bsgs -f tests/145.txt -t 35 -k 20 -R -q -s 10
 ./keyhunt -r 40000000000000005d3ab1ec5484000000:7fffffffffffffffffffffffffffffffff -l compress -m bsgs -f tests/135.txt -t 35 -k 20 -R -q -s 10
 ****************** 71 - 160 ******************
 ./keyhunt -r 400000000000000000:ffffffffffffffffffffffffffffffffffffffff -l compress -m address -c btc -f tests/btc.txt -t 35 -R
