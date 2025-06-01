@@ -9,6 +9,8 @@
 ./keyhunt -r 14b851eb851eb851eb851eb851eb851eb851f:1970a3d70a3d70a3d70a3d70a3d70a3d70a40 -l compress -m bsgs -f tests/145.txt -S -t 8 -k 1024 -R -q -s 10
 ./keyhunt -r 1970a3d70a3d70a3d70a3d70a3d70a3d70a40:1e28f5c28f5c28f5c28f5c28f5c28f5c28f61 -l compress -m bsgs -f tests/145.txt -S -t 8 -k 1024 -R -q -s 10
 ./keyhunt -r 1e28f5c28f5c28f5c28f5c28f5c28f5c28f61:1ffffffffffffffffffffffffffffffffffff -l compress -m bsgs -f tests/145.txt -S -t 8 -k 1024 -R -q -s 10
+****************** VANITY MODE 71 72 ******************
+./keyhunt -m vanity -l compress -f tests/vanity_target.txt -r 400000000000000000:ffffffffffffffffff -t 8 -R -s 10 -q
 ****************** KHUSUS TES ******************
 ./keyhunt -r 1000000000000000000:1ffffffffffffffffff -m address -c btc -f tests/tes_address.txt -t 8 -q -s 10
 ./keyhunt -r 1000000000000000000:1ffffffffffffffffff -m bsgs -f tests/tes_bsgs.txt -t 8 -k 20 -q -s 10
