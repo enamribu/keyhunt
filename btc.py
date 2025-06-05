@@ -165,6 +165,33 @@ def format_key_info(key_block_lines):
     else: 
         return header + "<i>(Unable to parse key block content)</i>"
 
+def format_vanity_key_info(key_block_lines):
+    """
+    Memformat informasi vanity key untuk Telegram.
+    """
+    header = "🎯 <b>VANITY ADDRESS FOUND!</b> 🎯\n"
+    telegram_message_lines = []
+    
+    for line in key_block_lines:
+        if line.startswith("Vanity Private Key:"):
+            val = line[len("Vanity Private Key:"):].strip()
+            telegram_message_lines.append(f"Private Key: <code>{html.escape(val)}</code>")
+        elif line.startswith("pubkey:"):
+            val = line[len("pubkey:"):].strip()
+            telegram_message_lines.append(f"pubkey: <code>{html.escape(val)}</code>")
+        elif line.startswith("Address:"):
+            val = line[len("Address:"):].strip()
+            telegram_message_lines.append(f"Address: <code>{html.escape(val)}</code>")
+        elif line.startswith("rmd160:"):
+            val = line[len("rmd160:"):].strip()
+            telegram_message_lines.append(f"rmd160: <code>{html.escape(val)}</code>")
+        else:
+            telegram_message_lines.append(f"<code>{html.escape(line)}</code>")
+    
+    if telegram_message_lines:
+        return header + "\n" + "\n".join(telegram_message_lines)
+    else:
+        return header + "<i>(Unable to parse vanity key block content)</i>"
 
 def parse_config(file_path):
     """Membaca konfigurasi dari file dan memungkinkan pemilihan script."""
@@ -229,7 +256,9 @@ def run_keyhunt():
         print(f"[*] Waktu mulai: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         
         output_file = "KEYFOUNDKEYFOUND.txt"
+        vanity_file = "VANITYKEYFOUND.txt"
         last_position = os.path.getsize(output_file) if os.path.exists(output_file) else 0
+        last_vanity_position = os.path.getsize(vanity_file) if os.path.exists(vanity_file) else 0
         
         process = subprocess.Popen(
             command,
@@ -244,12 +273,14 @@ def run_keyhunt():
         
         start_time = time.time()
         keys_found_session = 0
+        vanity_keys_found_session = 0
         
         while True:
             if process.poll() is not None: 
                 print(f"[*] Proses keyhunt selesai dengan kode: {process.returncode}")
                 break
             
+            # Check for regular keys
             if os.path.exists(output_file):
                 new_key_blocks_list, last_pos_update = get_new_keys(output_file, last_position)
                 if new_key_blocks_list:
@@ -262,15 +293,29 @@ def run_keyhunt():
                             print("[+] Notifikasi berhasil terkirim ke Telegram.")
                         else:
                             print("[-] Gagal mengirim notifikasi ke Telegram.")
-            else:
-                last_position = 0
+            
+            # Check for vanity keys
+            if os.path.exists(vanity_file):
+                new_vanity_blocks, last_vanity_pos_update = get_new_keys(vanity_file, last_vanity_position)
+                if new_vanity_blocks:
+                    last_vanity_position = last_vanity_pos_update
+                    for vanity_block in new_vanity_blocks:
+                        vanity_keys_found_session += 1
+                        formatted_message = format_vanity_key_info(vanity_block)
+                        print(f"\n[+] Vanity address ditemukan! Mengirim ke Telegram...")
+                        if send_to_telegram(formatted_message):
+                            print("[+] Notifikasi vanity address berhasil terkirim ke Telegram.")
+                        else:
+                            print("[-] Gagal mengirim notifikasi vanity address ke Telegram.")
             
             time.sleep(1)
         
         print("\n[*] Pemantauan selesai.")
         print(f"[*] Waktu eksekusi total: {time.time() - start_time:.2f} detik")
         print(f"[*] Total key ditemukan dalam sesi ini: {keys_found_session}")
+        print(f"[*] Total vanity address ditemukan dalam sesi ini: {vanity_keys_found_session}")
         
+        # Final check for regular keys
         if os.path.exists(output_file):
             final_key_blocks, _ = get_new_keys(output_file, last_position)
             if final_key_blocks:
@@ -284,6 +329,21 @@ def run_keyhunt():
                     else:
                         print("[-] Gagal mengirim notifikasi ke Telegram (final check).")
                 print(f"[*] Total key ditemukan (termasuk final check): {keys_found_session}")
+        
+        # Final check for vanity keys
+        if os.path.exists(vanity_file):
+            final_vanity_blocks, _ = get_new_keys(vanity_file, last_vanity_position)
+            if final_vanity_blocks:
+                print("[*] Memeriksa vanity address terakhir setelah proses selesai...")
+                for vanity_block in final_vanity_blocks:
+                    vanity_keys_found_session += 1
+                    formatted_message = format_vanity_key_info(vanity_block)
+                    print(f"\n[+] Vanity address ditemukan (final check)! Mengirim ke Telegram...")
+                    if send_to_telegram(formatted_message):
+                        print("[+] Notifikasi vanity address berhasil terkirim ke Telegram (final check).")
+                    else:
+                        print("[-] Gagal mengirim notifikasi vanity address ke Telegram (final check).")
+                print(f"[*] Total vanity address ditemukan (termasuk final check): {vanity_keys_found_session}")
 
     except FileNotFoundError:
         print(f"[!] Error: Pastikan 'keyhunt.exe' berada di direktori yang sama atau dalam PATH, dan 'BTC_Setting.txt' ada.", file=sys.stderr)
