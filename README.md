@@ -54,6 +54,10 @@ Please read the CHANGELOG.md to see the new changes
 
 # Download and build
 
+This program was made in a linux environment.
+if you are windows user i strongly recommend to use WSL enviroment on Windows.
+it is available in the Microsoft store
+
 Please install on your system
 
 - git
@@ -78,10 +82,10 @@ apt install libgmp-dev -y
 To clone the repository
 
 ```
-git clone https://github.com/CryptoXploit/Keyhunt.git
+git clone https://github.com/albertobsd/keyhunt.git
 ```
 
-don't forget change to the keyhunt directory
+don't forget change to the keyhunt directory (But i'm not here to teach you linux commands)
 
 ```
 cd keyhunt
@@ -103,8 +107,7 @@ make legacy
 and then execute with `-h` to see the help
 
 ```
-./keyhunt -h (for newer systems)
-./keyhunt-legacy -h (for older systems)
+./keyhunt -h
 ```
 
 ## ¡Beta!
@@ -179,39 +182,29 @@ In this mode you can specify to seach only address compressed or uncompressed wi
 Test your luck with the random parameter `-R` againts the puzzle #66
 
 ```
-./keyhunt -m address -f tests/66.txt -b 66 -l compress -R -q -s 10 -t 24
+./keyhunt -m address -f tests/66.txt -b 66 -l compress -R -q -s 10
 ```
 
 Please note the change from `-r 1:FFFFFFFF` to `-b 66`, with -b you can specify the bit range
 
 output:
 ```
--------[+] Version 0.2.230519 Satoshi Quest(Linux), developed by AlbertoBSD(Linux Version - CryptoXploit)-------
-
-[+] Mode ► address
-[+] Search ► compressed only
+[+] Version 0.2.230430 Satoshi Quest, developed by AlbertoBSD
+[+] Mode address
+[+] Search compress only
 [+] Random mode
 [+] Quiet thread output
 [+] Stats output every 10 seconds
-[+] Threads ► 24
-[+] Setting search for ₿TC adddress
-[+] N ► 0x100000000
-[+] Bit Range ► 66
-[+] → From ► 0x20000000000000000
-[+] → To   ► 0x40000000000000000
+[+] Setting search for btc adddress
+[+] N = 0x100000000
+[+] Bit Range 66
+[+] -- from : 0x20000000000000000
+[+] -- to   : 0x40000000000000000
 [+] Allocating memory for 1 elements: 0.00 MB
 [+] Bloom filter for 1 elements.
-[+] Loading data to the bloomfilter total► 0.03 MB
-[+] Sorting data please wait... Done! 1 values were loaded and sorted
-[+] Total ►1103024128◄ keys in ►10◄ seconds: ⌠110 Mkeys/s⌡ █110302412 keys/s█
-[+] Total ►2208806912◄ keys in ►20◄ seconds: ⌠110 Mkeys/s⌡ █110440345 keys/s█
-[+] Total ►3316418560◄ keys in ►30◄ seconds: ⌠110 Mkeys/s⌡ █110547285 keys/s█
-[+] Total ►4423667712◄ keys in ►40◄ seconds: ⌠110 Mkeys/s⌡ █110591692 keys/s█
-[+] Total ►5527615488◄ keys in ►50◄ seconds: ⌠110 Mkeys/s⌡ █110552309 keys/s█
-[+] Total ►6631419904◄ keys in ►60◄ seconds: ⌠110 Mkeys/s⌡ █110523665 keys/s█
-[+] Total ►7737860096◄ keys in ►70◄ seconds: ⌠110 Mkeys/s⌡ █110540858 keys/s█
-[+] Total ►8851507200◄ keys in ►80◄ seconds: ⌠110 Mkeys/s⌡ █110643840 keys/s█
-[+] Total ►9970860032◄ keys in ►90◄ seconds: ⌠110 Mkeys/s⌡ █110787333 keys/s█
+[+] Loading data to the bloomfilter total: 0.03 MB
+[+] Sorting data ... done! 1 values were loaded and sorted
+^C] Total 47634432 keys in 10 seconds: ~4 Mkeys/s (4763443 keys/s)
 ```
 
 ### vanity search.
