@@ -358,5 +358,3 @@ def run_keyhunt():
 
 if __name__ == "__main__":
     run_keyhunt()
-    print("\n[*] Tekan Enter untuk keluar.")
-    input()
