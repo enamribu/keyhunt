@@ -884,7 +884,7 @@ int main(int argc, char **argv)	{
 				N_SEQUENTIAL_MAX = 0x100000000;
 			}
 		}
-		printf("[+] N = %p\n",(void*)N_SEQUENTIAL_MAX);
+		printf("[+] -- N = \033[1;33m%p\033[0m\n",(void*)N_SEQUENTIAL_MAX);
 		if(FLAGMODE == MODE_MINIKEYS)	{
 			BSGS_N.SetInt32(DEBUGCOUNT);
 			if(FLAGBASEMINIKEY)	{
@@ -926,10 +926,10 @@ int main(int argc, char **argv)	{
 		}
 		if(FLAGMODE != MODE_MINIKEYS)	{
 			hextemp = n_range_start.GetBase16();
-			printf("[+] -- from : 0x%s\n",hextemp);
+			printf("[+] -- from : \033[1;33m0x%s\033[0m\n",hextemp);
 			free(hextemp);
 			hextemp = n_range_end.GetBase16();
-			printf("[+] -- to   : 0x%s\n",hextemp);
+			printf("[+] -- to   : \033[1;33m0x%s\033[0m\n",hextemp);
 			free(hextemp);
 		}
 
@@ -1094,13 +1094,13 @@ int main(int argc, char **argv)	{
 				n_range_diff.Set(&n_range_end);
 				n_range_diff.Sub(&n_range_start);
 				printf("[+] Bit Range %i\n",bitrange);
-				printf("[+] -- from : 0x%s\n",bit_range_str_min);
-				printf("[+] -- to   : 0x%s\n",bit_range_str_max);
+				printf("[+] -- from : \033[1;33m0x%s\033[0m\n",bit_range_str_min);
+				printf("[+] -- to   : \033[1;33m0x%s\033[0m\n",bit_range_str_max);
 			}
 			else	{
 				printf("[+] Range \n");
-				printf("[+] -- from : 0x%s\n",range_start);
-				printf("[+] -- to   : 0x%s\n",range_end);
+				printf("[+] -- from : \033[1;33m0x%s\033[0m\n",range_start);
+				printf("[+] -- to   : \033[1;33m0x%s\033[0m\n",range_end);
 			}
 		}
 		else	{	//Random start
@@ -1180,7 +1180,7 @@ int main(int argc, char **argv)	{
 
 		
 		hextemp = BSGS_N.GetBase16();
-		printf("[+] N = 0x%s\n",hextemp);
+		printf("[+] -- N = \033[1;33m0x%s\033[0m\n",hextemp);
 		free(hextemp);
 		if(((uint64_t)(bsgs_m/256)) > 10000)	{
 			itemsbloom = (uint64_t)(bsgs_m / 256);
