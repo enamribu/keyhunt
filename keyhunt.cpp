@@ -484,7 +484,7 @@ int main(int argc, char **argv)	{
 	
 	
 	
-	printf("[*****] GOOD LUCK [*****]\n\n");
+	printf("[+] Version %s, developed by AlbertoBSD\n",version);
 
 	while ((c = getopt(argc, argv, "deh6MqRSB:b:c:C:E:f:I:k:l:m:N:n:p:r:s:t:v:G:8:z:")) != -1) {
 		switch(c) {
@@ -2200,10 +2200,10 @@ int main(int argc, char **argv)	{
 				
 				if(pretotal.IsLower(&int_limits[0]))	{
 					if(FLAGMATRIX)	{
-						sprintf(buffer,"[+] Total %s keys in %s seconds: %s keys/s\n",str_total,str_seconds,str_pretotal);
+						sprintf(buffer,"[+] Total |%s| keys in |%s| seconds: |%s keys/s|\n",str_total,str_seconds,str_pretotal);
 					}
 					else	{
-						sprintf(buffer,"\r[+] Total %s keys in %s seconds: %s keys/s\r",str_total,str_seconds,str_pretotal);
+						sprintf(buffer,"\r[+] Total |%s| keys in |%s| seconds: |%s keys/s|\r",str_total,str_seconds,str_pretotal);
 					}
 				}
 				else	{
@@ -2481,10 +2481,10 @@ void *thread_process_minikeys(void *vargp)	{
 								rmd160toaddress_dst(publickeyhashrmd160_uncompress[k],address[k]);
 								minikeys[k][22] = '\0';
 								if(keys != NULL)	{
-									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 									fclose(keys);
 								}
-								printf("\n[*] HIT!! Private Key: %s\n[*] pubkey: %s\n[*] minikey: %s\n[*] address: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+								printf("\nHIT!! Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 								ReleaseMutex(write_keys);
 #else
@@ -5819,12 +5819,10 @@ void writevanitykey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("VANITYKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("------------------------------------------------------------------------------");
-	printf("\n[*] Vanity Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
-	printf("------------------------------------------------------------------------------\n\n");
+	printf("\nVanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6008,12 +6006,10 @@ void writekey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress: %s\nrmd160: %s\n\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("------------------------------------------------------------------------------");
-	printf("\n[*] Hit! Private Key: %s\n[*] pubkey: %s\n[*] Address: %s\n[*] rmd160: %s\n",hextemp,public_key_hex,address,hexrmd);
-	printf("------------------------------------------------------------------------------\n\n");
+	printf("\nHit! Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6042,10 +6038,10 @@ void writekeyeth(Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\naddress: %s\n\n",hextemp,address);
+		fprintf(keys,"Private Key: %s\naddress: %s\n",hextemp,address);
 		fclose(keys);
 	}
-	printf("\n[*] Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
+	printf("\n Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
 #else
