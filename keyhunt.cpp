@@ -2481,10 +2481,10 @@ void *thread_process_minikeys(void *vargp)	{
 								rmd160toaddress_dst(publickeyhashrmd160_uncompress[k],address[k]);
 								minikeys[k][22] = '\0';
 								if(keys != NULL)	{
-									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+									fprintf(keys,"Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 									fclose(keys);
 								}
-								printf("\nHIT!! Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
+								printf("\nHIT!! Private Key: %s\npubkey: %s\nminikey: %s\naddress: %s\n\n",hextemp,public_key_uncompressed_hex,minikeys[k],address[k]);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 								ReleaseMutex(write_keys);
 #else
@@ -2570,14 +2570,14 @@ void *thread_process(void *vargp)	{
 			count = 0;
 			if(FLAGMATRIX)	{
 					hextemp = key_mpz.GetBase16();
-					printf("Base key: %s thread %i\n",hextemp,thread_number);
+					printf("[+] Base key: %s thread %i\n",hextemp,thread_number);
 					fflush(stdout);
 					free(hextemp);
 			}
 			else	{
 				if(FLAGQUIET == 0){
 					hextemp = key_mpz.GetBase16();
-					printf("\rBase key: %s     \r",hextemp);
+					printf("\r[+] Base key: \033[1;33m%s\033[0m     \r",hextemp);
 					fflush(stdout);
 					free(hextemp);
 					THREADOUTPUT = 1;
@@ -3180,14 +3180,14 @@ void *thread_process_vanity(void *vargp)	{
 			count = 0;
 			if(FLAGMATRIX)	{
 					hextemp = key_mpz.GetBase16();
-					printf("Base key: %s thread %i\n",hextemp,thread_number);
+					printf("[+] Base key: %s thread %i\n",hextemp,thread_number);
 					fflush(stdout);
 					free(hextemp);
 			}
 			else	{
 				if(FLAGQUIET == 0)	{
 					hextemp = key_mpz.GetBase16();
-					printf("\rBase key: %s     \r",hextemp);
+					printf("\r[+] Base key: \033[1;33m%s\033[0m     \r",hextemp);
 					fflush(stdout);
 					free(hextemp);
 					THREADOUTPUT = 1;
@@ -3852,7 +3852,7 @@ void *thread_process_bsgs(void *vargp)	{
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread 0x%s   \r",aux_c);
+				printf("\r[+] Thread: 0x\033[1;33m%s\033[0m   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -3960,7 +3960,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -4082,7 +4082,7 @@ void *thread_process_bsgs_random(void *vargp)	{
 		else{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread 0x%s  \r",aux_c);
+				printf("\r[+] Thread: 0x\033[1;33m%s\033[0m  \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -4209,7 +4209,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -4888,7 +4888,7 @@ void *thread_process_bsgs_dance(void *vargp)	{
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread 0x%s   \r",aux_c);
+				printf("\r[+] Thread: 0x\033[1;33m%s\033[0m   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -5014,7 +5014,7 @@ pn.y.ModAdd(&GSn[i].y);
 
 								filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 								if(filekey != NULL)	{
-									fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
+									fprintf(filekey,"Key found privkey %s\nPublickey %s\n\n",hextemp,aux_c);
 									fclose(filekey);
 								}
 								free(hextemp);
@@ -5148,7 +5148,7 @@ void *thread_process_bsgs_backward(void *vargp)	{
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread 0x%s   \r",aux_c);
+				printf("\r[+] Thread: 0x\033[1;33m%s\033[0m   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -5432,7 +5432,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 		else	{
 			if(FLAGQUIET == 0){
 				aux_c = base_key.GetBase16();
-				printf("\r[+] Thread 0x%s   \r",aux_c);
+				printf("\r[+] Thread: 0x\033[1;33m%s\033[0m   \r",aux_c);
 				fflush(stdout);
 				free(aux_c);
 				THREADOUTPUT = 1;
@@ -5556,7 +5556,7 @@ void *thread_process_bsgs_both(void *vargp)	{
 
 									filekey = fopen("KEYFOUNDKEYFOUND.txt","a");
 									if(filekey != NULL)	{
-										fprintf(filekey,"Key found privkey %s\nPublickey %s\n",hextemp,aux_c);
+										fprintf(filekey,"Key found privkey %s\nPublickey %s\n\n",hextemp,aux_c);
 										fclose(filekey);
 									}
 									free(hextemp);
@@ -5819,10 +5819,10 @@ void writevanitykey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("VANITYKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("\nVanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
+	printf("\nVanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n\n",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6006,10 +6006,10 @@ void writekey(bool compressed,Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
+		fprintf(keys,"Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
 	}
-	printf("\nHit! Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n",hextemp,public_key_hex,address,hexrmd);
+	printf("\nHit! Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n\n",hextemp,public_key_hex,address,hexrmd);
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
@@ -6038,10 +6038,10 @@ void writekeyeth(Int *key)	{
 #endif
 	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
-		fprintf(keys,"Private Key: %s\naddress: %s\n",hextemp,address);
+		fprintf(keys,"Private Key: %s\naddress: %s\n\n",hextemp,address);
 		fclose(keys);
 	}
-	printf("\n Hit!!!! Private Key: %s\naddress: %s\n",hextemp,address);
+	printf("\n Hit!!!! Private Key: %s\naddress: %s\n\n",hextemp,address);
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	ReleaseMutex(write_keys);
 #else
