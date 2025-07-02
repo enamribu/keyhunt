@@ -2222,14 +2222,14 @@ int main(int argc, char **argv)	{
 					div_pretotal.Div(&int_limits[salir ? i : i-1]);
 					str_divpretotal = div_pretotal.GetBase10();
 					if(FLAGMATRIX)	{
-						sprintf(buffer,"[+] | \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m |\n",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
+						sprintf(buffer,"[+] Scan \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m\n",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
 					}
 					else	{
 						if(THREADOUTPUT == 1)	{
-							sprintf(buffer,"\r[+] | \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m |\r",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
+							sprintf(buffer,"\r[+] Scan \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m\r",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
 						}
 						else	{
-							sprintf(buffer,"\r[+] | \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m |\r",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
+							sprintf(buffer,"\r[+] Scan \033[1;33m%s\033[0m | \033[1;33m%s Sec\033[0m | \033[1;33m%s %s\033[0m | \033[1;33m%s\033[0m\r",str_total,str_seconds,str_divpretotal,str_limits_prefixs[salir ? i : i-1],str_pretotal);
 						}
 					}
 					free(str_divpretotal);
