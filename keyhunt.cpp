@@ -5817,7 +5817,7 @@ void writevanitykey(bool compressed,Int *key)	{
 #else
 	pthread_mutex_lock(&write_keys);
 #endif
-	keys = fopen("VANITYKEYFOUND.txt","a+");
+	keys = fopen("KEYFOUNDKEYFOUND.txt","a+");
 	if(keys != NULL)	{
 		fprintf(keys,"Vanity Private Key: %s\npubkey: %s\nAddress %s\nrmd160 %s\n\n",hextemp,public_key_hex,address,hexrmd);
 		fclose(keys);
